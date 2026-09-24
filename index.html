@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0b1020" />
+<meta name="description" content="Kolkata SOS - a one-stop emergency directory for Kolkata, West Bengal. Verified government helplines, live hospital and police station locations, and a dedicated women's safety SOS tool." />
+<title>Kolkata SOS · One-Stop Emergency Directory</title>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b1020'/%3E%3Ctext y='72' x='50' text-anchor='middle' font-size='58' font-family='Arial' font-weight='bold' fill='%23ff3b5c'%3ESOS%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   KOLKATA SOS — DESIGN SYSTEM
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0}
+img,svg{max-width:100%}
+button,input,select,textarea{font-family:inherit}
+
+:root{
+  --font:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+
+  --red:#ff3b5c;      --red-deep:#c81e3c;
+  --amber:#ffb020;    --orange:#ff7a18;
+  --teal:#22d3ee;     --violet:#8b5cf6;
+  --green:#22c55e;    --pink:#ff5c9e;
+
+  --grad-sos:linear-gradient(135deg,#ff3b5c 0%,#ff7a18 55%,#ffb020 100%);
+  --grad-brand:linear-gradient(135deg,#ff3b5c 0%,#8b5cf6 100%);
+  --grad-cool:linear-gradient(135deg,#22d3ee 0%,#8b5cf6 100%);
+  --grad-safe:linear-gradient(135deg,#22c55e 0%,#22d3ee 100%);
+
+  --r-sm:10px; --r-md:16px; --r-lg:22px; --r-xl:30px; --r-full:999px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --maxw:1240px;
+}
+
+/* ---------- DARK (default) ---------- */
+html[data-theme="dark"]{
+  --bg:#070b18;
+  --text:#eef2ff;
+  --text-2:#c3cbe6;
+  --muted:#8e9ac0;
+  --glass:rgba(255,255,255,.055);
+  --glass-2:rgba(255,255,255,.085);
+  --glass-3:rgba(255,255,255,.13);
+  --border:rgba(255,255,255,.11);
+  --border-2:rgba(255,255,255,.19);
+  --shadow:0 18px 44px -18px rgba(0,0,0,.85);
+  --shadow-lg:0 34px 80px -26px rgba(0,0,0,.9);
+  --aurora-1:rgba(255,59,92,.30);
+  --aurora-2:rgba(255,176,32,.20);
+  --aurora-3:rgba(139,92,246,.24);
+  --aurora-4:rgba(34,211,238,.15);
+  --base-grad:linear-gradient(165deg,#070b18 0%,#0b1020 42%,#140a1c 100%);
+  --skeleton:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.13),rgba(255,255,255,.05));
+  --scroll-thumb:rgba(255,255,255,.18);
+  --panel-solid:#101731;
+  color-scheme:dark;
+}
+
+/* ---------- LIGHT ---------- */
+html[data-theme="light"]{
+  --bg:#f4f6fc;
+  --text:#0d1428;
+  --text-2:#2c3654;
+  --muted:#5d6987;
+  --glass:rgba(255,255,255,.78);
+  --glass-2:rgba(255,255,255,.92);
+  --glass-3:#ffffff;
+  --border:rgba(13,20,40,.10);
+  --border-2:rgba(13,20,40,.18);
+  --shadow:0 16px 38px -18px rgba(20,30,70,.30);
+  --shadow-lg:0 30px 70px -26px rgba(20,30,70,.36);
+  --aurora-1:rgba(255,59,92,.20);
+  --aurora-2:rgba(255,176,32,.22);
+  --aurora-3:rgba(139,92,246,.18);
+  --aurora-4:rgba(34,211,238,.18);
+  --base-grad:linear-gradient(165deg,#ffffff 0%,#f2f5fd 45%,#fdf3f4 100%);
+  --skeleton:linear-gradient(90deg,rgba(13,20,40,.05),rgba(13,20,40,.11),rgba(13,20,40,.05));
+  --scroll-thumb:rgba(13,20,40,.22);
+  --panel-solid:#ffffff;
+  color-scheme:light;
+}
+
+body{
+  font-family:var(--font);
+  color:var(--text);
+  background:var(--bg);
+  min-height:100vh; min-height:100dvh;
+  display:flex; flex-direction:column;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  transition:color .35s var(--ease), background-color .35s var(--ease);
+}
+
+/* ============================================================
+   ANIMATED BACKGROUND
+   ============================================================ */
+.bg-layer{position:fixed;inset:0;z-index:-3;background:var(--base-grad)}
+.bg-aurora{
+  position:fixed;inset:-25%;z-index:-2;pointer-events:none;filter:blur(48px);
+  background:
+    radial-gradient(38% 34% at 16% 14%, var(--aurora-1), transparent 62%),
+    radial-gradient(34% 30% at 84% 12%, var(--aurora-2), transparent 62%),
+    radial-gradient(40% 38% at 78% 82%, var(--aurora-3), transparent 64%),
+    radial-gradient(36% 32% at 12% 88%, var(--aurora-4), transparent 64%);
+  animation:aurora 22s ease-in-out infinite alternate;
+}
+@keyframes aurora{
+  0%{transform:translate3d(-2%,-1%,0) scale(1)}
+  50%{transform:translate3d(2%,2%,0) scale(1.09)}
+  100%{transform:translate3d(-1%,3%,0) scale(1.03)}
+}
+.bg-grid{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:
+    linear-gradient(to right,var(--border) 1px,transparent 1px),
+    linear-gradient(to bottom,var(--border) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 85% 65% at 50% 0%,#000 15%,transparent 78%);
+  -webkit-mask-image:radial-gradient(ellipse 85% 65% at 50% 0%,#000 15%,transparent 78%);
+}
+.bg-scan{
+  position:fixed;left:0;right:0;height:38vh;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,transparent,var(--aurora-1),transparent);
+  opacity:.10;animation:scan 9s linear infinite;
+}
+@keyframes scan{0%{top:-40vh}100%{top:110vh}}
+
+/* ============================================================
+   LAYOUT PRIMITIVES
+   ============================================================ */
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:clamp(14px,4vw,26px)}
+.skip{position:absolute;left:-9999px;top:0;z-index:999;padding:12px 18px;background:var(--red);color:#fff;border-radius:0 0 12px 0;font-weight:700}
+.skip:focus{left:0}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.site-head{position:relative;padding:22px 0 6px;animation:dropIn .7s var(--ease) both}
+@keyframes dropIn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+
+.head-row{display:flex;align-items:center;gap:12px;flex-wrap:nowrap}
+.brand{display:flex;align-items:center;gap:13px;margin-right:auto;min-width:0;flex:1 1 auto}
+.brand-mark{
+  position:relative;flex:0 0 auto;width:52px;height:52px;border-radius:16px;
+  background:var(--grad-sos);display:grid;place-items:center;
+  box-shadow:0 12px 30px -10px rgba(255,59,92,.85), inset 0 1px 0 rgba(255,255,255,.4);
+  animation:markPulse 2.6s var(--ease) infinite;
+}
+@keyframes markPulse{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-3px) rotate(-2deg)}}
+.brand-mark svg{width:28px;height:28px;fill:#fff}
+.brand-mark::after{
+  content:'';position:absolute;inset:-5px;border-radius:20px;border:2px solid var(--red);
+  opacity:0;animation:ring 2.6s var(--ease) infinite;
+}
+@keyframes ring{0%{opacity:.7;transform:scale(.92)}70%{opacity:0;transform:scale(1.28)}100%{opacity:0}}
+.brand-txt{min-width:0}
+.brand-txt h1{
+  margin:0;font-size:clamp(1.28rem,3.4vw,1.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;
+  background:var(--grad-sos);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.brand-txt p{margin:2px 0 0;font-size:.79rem;color:var(--muted);font-weight:600;letter-spacing:.02em}
+
+.head-actions{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+
+.pill{
+  display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:var(--r-full);
+  background:var(--glass);border:1px solid var(--border);backdrop-filter:blur(14px);
+  font-size:.76rem;font-weight:700;color:var(--text-2);white-space:nowrap;
+}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--amber)}
+.pill.ok .dot{background:var(--green);box-shadow:0 0 0 0 rgba(34,197,94,.55);animation:blip 1.6s infinite}
+.pill.err .dot{background:var(--red)}
+.pill.load .dot{background:var(--amber);box-shadow:0 0 0 0 rgba(255,176,32,.55);animation:blip 1.6s infinite}
+@keyframes blip{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}70%{box-shadow:0 0 0 9px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+
+.icon-btn{
+  width:42px;height:42px;display:grid;place-items:center;border-radius:13px;cursor:pointer;
+  background:var(--glass);border:1px solid var(--border);color:var(--text);
+  backdrop-filter:blur(14px);position:relative;overflow:hidden;
+  transition:transform .25s var(--ease),background .25s,border-color .25s;
+}
+.icon-btn:hover{transform:translateY(-2px);background:var(--glass-2);border-color:var(--border-2)}
+.icon-btn:active{transform:scale(.94)}
+.icon-btn svg{width:19px;height:19px;fill:currentColor}
+html[data-theme="dark"] .i-sun{display:block}html[data-theme="dark"] .i-moon{display:none}
+html[data-theme="light"] .i-sun{display:none}html[data-theme="light"] .i-moon{display:block}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  margin-top:20px;padding:clamp(20px,4.4vw,34px);border-radius:var(--r-xl);
+  background:linear-gradient(135deg,rgba(255,59,92,.16),rgba(255,122,24,.10) 45%,rgba(139,92,246,.14));
+  border:1px solid var(--border-2);backdrop-filter:blur(18px);
+  box-shadow:var(--shadow);position:relative;overflow:hidden;
+  animation:riseIn .8s .06s var(--ease) both;
+}
+@keyframes riseIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.hero::before{
+  content:'';position:absolute;top:-60%;right:-12%;width:340px;height:340px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,59,92,.34),transparent 68%);animation:orb 12s ease-in-out infinite alternate;
+}
+.hero::after{
+  content:'';position:absolute;bottom:-70%;left:-8%;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,176,32,.26),transparent 68%);animation:orb 15s 1s ease-in-out infinite alternate-reverse;
+}
+@keyframes orb{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-26px,22px,0) scale(1.14)}}
+.hero-inner{position:relative;z-index:1;display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+.hero-copy{flex:1 1 340px;min-width:0}
+.tagline{
+  display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:var(--r-full);
+  background:rgba(255,59,92,.16);border:1px solid rgba(255,59,92,.36);
+  color:var(--red);font-size:.7rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+}
+html[data-theme="light"] .tagline{color:var(--red-deep)}
+.hero-copy h2{margin:13px 0 9px;font-size:clamp(1.5rem,4.6vw,2.3rem);font-weight:800;letter-spacing:-.035em;line-height:1.12}
+.hero-copy h2 em{font-style:normal;background:var(--grad-sos);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-copy p{margin:0;color:var(--text-2);font-size:.93rem;max-width:58ch}
+.hero-facts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.fact{display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:var(--r-full);background:var(--glass-2);border:1px solid var(--border);font-size:.76rem;font-weight:700;color:var(--text-2)}
+.fact b{color:var(--text);font-weight:800}
+
+.sos-orb{
+  flex:0 0 auto;width:clamp(126px,26vw,164px);height:clamp(126px,26vw,164px);border-radius:50%;
+  display:grid;place-items:center;text-align:center;cursor:pointer;border:none;position:relative;
+  background:var(--grad-sos);color:#fff;font-family:inherit;
+  box-shadow:0 24px 56px -18px rgba(255,59,92,.9), inset 0 2px 0 rgba(255,255,255,.42);
+  transition:transform .3s var(--ease),box-shadow .3s;
+}
+.sos-orb:hover{transform:scale(1.05)}
+.sos-orb:active{transform:scale(.96)}
+.sos-orb .lbl{font-size:clamp(1.15rem,3.4vw,1.5rem);font-weight:800;letter-spacing:.09em;line-height:1}
+.sos-orb .sub{font-size:.62rem;font-weight:700;opacity:.92;letter-spacing:.05em;margin-top:5px;display:block}
+.sos-orb::before,.sos-orb::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid rgba(255,59,92,.55);animation:orbRing 2.8s var(--ease) infinite}
+.sos-orb::after{animation-delay:1.4s}
+@keyframes orbRing{0%{transform:scale(1);opacity:.75}100%{transform:scale(1.55);opacity:0}}
+
+/* ============================================================
+   QUICK HELPLINE STRIP
+   ============================================================ */
+.strip-head{display:flex;align-items:baseline;gap:10px;margin:28px 0 12px;flex-wrap:wrap}
+.strip-head h3{margin:0;font-size:1rem;font-weight:800;letter-spacing:-.02em}
+.strip-head span{font-size:.74rem;color:var(--muted);font-weight:600}
+.strip{
+  display:grid;grid-auto-flow:column;grid-auto-columns:minmax(150px,1fr);gap:11px;
+  overflow-x:auto;padding:4px 4px 14px;scroll-snap-type:x mandatory;
+  scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) transparent;
+}
+.strip::-webkit-scrollbar{height:7px}
+.strip::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:9px}
+.strip::-webkit-scrollbar-track{background:transparent}
+@media(min-width:960px){.strip{grid-auto-flow:row;grid-template-columns:repeat(auto-fit,minmax(152px,1fr));overflow:visible}}
+
+.hl{
+  scroll-snap-align:start;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;gap:3px;padding:14px 15px;border-radius:var(--r-md);
+  background:var(--glass);border:1px solid var(--border);backdrop-filter:blur(14px);
+  text-decoration:none;color:var(--text);
+  transition:transform .3s var(--ease),border-color .3s,background .3s,box-shadow .3s;
+}
+.hl:hover{transform:translateY(-4px);background:var(--glass-2);border-color:var(--border-2);box-shadow:var(--shadow)}
+.hl::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--grad-sos);opacity:.85}
+.hl .n{font-size:1.18rem;font-weight:800;letter-spacing:-.02em;line-height:1.15;word-break:break-word}
+.hl .t{font-size:.7rem;font-weight:700;color:var(--muted);letter-spacing:.02em}
+.hl .src{font-size:.6rem;color:var(--muted);opacity:.72;margin-top:3px}
+.hl.hl-blue::after{background:var(--grad-cool)}
+.hl.hl-green::after{background:var(--grad-safe)}
+.hl.hl-violet::after{background:linear-gradient(135deg,#8b5cf6,#ff5c9e)}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+.tabbar-outer{
+  position:sticky;top:0;z-index:60;padding:10px 0 12px;margin-top:6px;
+  background:linear-gradient(180deg,var(--bg) 0%,var(--bg) 74%,transparent 100%);
+  backdrop-filter:blur(12px);
+}
+.tabbar{
+  display:flex;gap:7px;overflow-x:auto;padding:7px;border-radius:var(--r-lg);
+  background:var(--glass);border:1px solid var(--border);backdrop-filter:blur(20px);box-shadow:var(--shadow);
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.tabbar::-webkit-scrollbar{display:none}
+.tab{
+  flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;padding:10px 15px;border-radius:var(--r-md);
+  border:1px solid transparent;background:transparent;color:var(--text-2);font-family:inherit;
+  font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;position:relative;overflow:hidden;
+  transition:background .28s var(--ease),color .28s,transform .28s var(--ease),border-color .28s;
+}
+.tab svg{width:16px;height:16px;fill:currentColor;flex:0 0 auto}
+.tab:hover{background:var(--glass-2);color:var(--text);transform:translateY(-2px)}
+.tab[aria-selected="true"]{background:var(--grad-sos);color:#fff;border-color:transparent;box-shadow:0 10px 26px -12px rgba(255,59,92,.95)}
+.tab .cnt{
+  font-size:.66rem;font-weight:800;padding:2px 7px;border-radius:var(--r-full);
+  background:rgba(127,127,150,.22);min-width:20px;text-align:center;
+}
+.tab[aria-selected="true"] .cnt{background:rgba(255,255,255,.28)}
+.tab.tab-sos{background:linear-gradient(135deg,rgba(255,59,92,.2),rgba(139,92,246,.2));border-color:rgba(255,59,92,.42);color:var(--text)}
+.tab.tab-sos[aria-selected="true"]{background:linear-gradient(135deg,#ff3b5c,#8b5cf6);color:#fff;border-color:transparent}
+
+/* ============================================================
+   TOOLBAR
+   ============================================================ */
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0 20px}
+.search{position:relative;flex:1 1 240px;min-width:0}
+.search svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);width:17px;height:17px;fill:var(--muted);pointer-events:none}
+.search input{
+  width:100%;padding:13px 42px 13px 43px;border-radius:var(--r-md);font-family:inherit;font-size:.88rem;
+  background:var(--glass);border:1px solid var(--border);color:var(--text);backdrop-filter:blur(14px);
+  transition:border-color .25s,box-shadow .25s,background .25s;
+}
+.search input::placeholder{color:var(--muted)}
+.search input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 4px rgba(255,59,92,.16);background:var(--glass-2)}
+.search .clr{position:absolute;right:9px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;border:none;background:var(--glass-3);color:var(--text);cursor:pointer;display:none;place-items:center;font-size:15px;line-height:1}
+.search.has-val .clr{display:grid}
+
+select.sel{
+  padding:13px 15px;border-radius:var(--r-md);font-family:inherit;font-size:.84rem;font-weight:700;
+  background:var(--glass);border:1px solid var(--border);color:var(--text);cursor:pointer;backdrop-filter:blur(14px);
+}
+select.sel:focus{outline:none;border-color:var(--red)}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:var(--r-md);cursor:pointer;
+  background:var(--glass);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:.82rem;font-weight:700;
+  backdrop-filter:blur(14px);transition:transform .25s var(--ease),background .25s,border-color .25s;
+}
+.btn-ghost:hover{transform:translateY(-2px);background:var(--glass-2);border-color:var(--border-2)}
+.btn-ghost svg{width:15px;height:15px;fill:currentColor}
+.btn-ghost[aria-pressed="true"]{background:var(--grad-sos);color:#fff;border-color:transparent}
+.btn-ghost:disabled{opacity:.55;cursor:not-allowed;transform:none}
+
+/* ============================================================
+   BANNERS
+   ============================================================ */
+.banner{
+  display:none;gap:13px;align-items:flex-start;padding:15px 17px;border-radius:var(--r-md);margin-bottom:18px;
+  border:1px solid rgba(255,59,92,.4);background:linear-gradient(135deg,rgba(255,59,92,.14),rgba(255,122,24,.09));
+  animation:riseIn .5s var(--ease) both;
+}
+.banner.show{display:flex}
+.banner svg{width:22px;height:22px;fill:var(--red);flex:0 0 auto;margin-top:1px}
+.banner .bt{font-weight:800;font-size:.87rem;margin-bottom:3px}
+.banner .bd{font-size:.81rem;color:var(--text-2)}
+.banner .bd code{background:var(--glass-2);padding:1px 6px;border-radius:6px;font-size:.78rem}
+.banner.warn{border-color:rgba(255,176,32,.45);background:linear-gradient(135deg,rgba(255,176,32,.14),rgba(255,122,24,.08))}
+.banner.warn svg{fill:var(--amber)}
+
+/* ============================================================
+   PANELS, SECTIONS, CARDS
+   ============================================================ */
+.panel{display:none;animation:fadeUp .5s var(--ease) both}
+.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.cat{margin-bottom:34px;scroll-margin-top:150px}
+.cat-head{display:flex;align-items:center;gap:13px;margin-bottom:14px;flex-wrap:wrap}
+.cat-ico{
+  width:44px;height:44px;flex:0 0 auto;border-radius:14px;display:grid;place-items:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35);
+}
+.cat-ico svg{width:22px;height:22px;fill:#fff}
+.ico-hosp{background:linear-gradient(135deg,#ff3b5c,#ff7a18)}
+.ico-pol{background:linear-gradient(135deg,#2563eb,#22d3ee)}
+.ico-cyb{background:linear-gradient(135deg,#8b5cf6,#22d3ee)}
+.ico-hl{background:linear-gradient(135deg,#ff3b5c,#c81e3c)}
+.ico-rail{background:linear-gradient(135deg,#0ea5e9,#22d3ee)}
+.ico-dis{background:linear-gradient(135deg,#f59e0b,#ef4444)}
+.ico-child{background:linear-gradient(135deg,#22c55e,#84cc16)}
+.ico-old{background:linear-gradient(135deg,#8b5cf6,#6366f1)}
+.ico-road{background:linear-gradient(135deg,#64748b,#0ea5e9)}
+.ico-safe{background:linear-gradient(135deg,#ff5c9e,#8b5cf6)}
+.ico-misc{background:linear-gradient(135deg,#475569,#94a3b8)}
+.cat-head h3{margin:0;font-size:1.14rem;font-weight:800;letter-spacing:-.025em}
+.cat-head p{margin:1px 0 0;font-size:.76rem;color:var(--muted);font-weight:600}
+.cat-count{
+  margin-left:auto;font-size:.72rem;font-weight:800;padding:6px 12px;border-radius:var(--r-full);
+  background:var(--glass-2);border:1px solid var(--border);color:var(--text-2);white-space:nowrap;
+}
+
+.grid{display:grid;gap:13px;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.grid.police{grid-template-columns:repeat(auto-fill,minmax(min(100%,264px),1fr))}
+
+.card{
+  position:relative;display:flex;flex-direction:column;gap:11px;padding:17px;
+  border-radius:var(--r-lg);background:var(--glass);border:1px solid var(--border);
+  backdrop-filter:blur(16px);box-shadow:var(--shadow);overflow:hidden;
+  animation:cardIn .55s var(--ease) both;
+  transition:transform .32s var(--ease),border-color .32s,box-shadow .32s,background .32s;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px) scale(.985)}to{opacity:1;transform:none}}
+.card:hover{transform:translateY(-5px);border-color:var(--border-2);box-shadow:var(--shadow-lg);background:var(--glass-2)}
+.card::before{content:'';position:absolute;inset:0 auto 0 0;width:3px;background:var(--accent,var(--grad-sos))}
+
+.card-top{display:flex;gap:11px;align-items:flex-start}
+.card-ico{
+  width:40px;height:40px;flex:0 0 auto;border-radius:12px;display:grid;place-items:center;
+  background:var(--accent,var(--grad-sos));box-shadow:0 8px 20px -10px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.32);
+}
+.card-ico svg{width:20px;height:20px;fill:#fff}
+.card-name{margin:0;font-size:.98rem;font-weight:800;letter-spacing:-.02em;line-height:1.28;word-break:break-word}
+.card-sub{margin:3px 0 0;font-size:.73rem;color:var(--muted);font-weight:600;word-break:break-word}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{
+  font-size:.64rem;font-weight:800;letter-spacing:.045em;text-transform:uppercase;
+  padding:4px 9px;border-radius:var(--r-full);background:var(--glass-2);border:1px solid var(--border);color:var(--muted);
+}
+.chip.hot{background:rgba(255,59,92,.16);border-color:rgba(255,59,92,.36);color:var(--red)}
+html[data-theme="light"] .chip.hot{color:var(--red-deep)}
+.chip.ok{background:rgba(34,197,94,.16);border-color:rgba(34,197,94,.36);color:#16a34a}
+html[data-theme="dark"] .chip.ok{color:#4ade80}
+.chip.info{background:rgba(34,211,238,.16);border-color:rgba(34,211,238,.36);color:#0e7490}
+html[data-theme="dark"] .chip.info{color:#67e8f9}
+
+.card-meta{display:flex;flex-direction:column;gap:6px;font-size:.78rem;color:var(--text-2)}
+.mrow{display:flex;gap:8px;align-items:flex-start}
+.mrow svg{width:14px;height:14px;fill:var(--muted);flex:0 0 auto;margin-top:3px}
+.mrow span{word-break:break-word;min-width:0}
+.mrow a{color:var(--teal);text-decoration:none;word-break:break-all}
+.mrow a:hover{text-decoration:underline}
+html[data-theme="light"] .mrow a{color:#0e7490}
+
+.card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:4px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 14px;border-radius:12px;
+  font-family:inherit;font-size:.79rem;font-weight:800;text-decoration:none;cursor:pointer;border:1px solid transparent;
+  transition:transform .22s var(--ease),box-shadow .22s,filter .22s,background .22s;position:relative;overflow:hidden;
+}
+.btn svg{width:14px;height:14px;fill:currentColor;flex:0 0 auto}
+.btn:active{transform:scale(.95)}
+.btn-call{background:var(--grad-sos);color:#fff;flex:1 1 auto;box-shadow:0 10px 24px -12px rgba(255,59,92,.95)}
+.btn-call:hover{filter:brightness(1.08);transform:translateY(-2px)}
+.btn-wa{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;box-shadow:0 10px 24px -12px rgba(37,211,102,.9)}
+.btn-wa:hover{filter:brightness(1.07);transform:translateY(-2px)}
+.btn-mail,.btn-map{background:var(--glass-2);color:var(--text);border-color:var(--border-2)}
+.btn-mail:hover,.btn-map:hover{background:var(--glass-3);transform:translateY(-2px)}
+.btn-soft{background:var(--glass-2);color:var(--text-2);border-color:var(--border)}
+.btn-soft:hover{background:var(--glass-3);color:var(--text)}
+.btn-sm{padding:8px 11px;font-size:.74rem}
+.btn:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+
+.ripple{position:absolute;border-radius:50%;transform:scale(0);background:rgba(255,255,255,.45);animation:rip .6s linear;pointer-events:none}
+@keyframes rip{to{transform:scale(3.2);opacity:0}}
+
+/* ---------- SKELETON ---------- */
+.sk{height:150px;border-radius:var(--r-lg);background:var(--skeleton);background-size:220% 100%;animation:shim 1.5s linear infinite;border:1px solid var(--border)}
+@keyframes shim{0%{background-position:130% 0}100%{background-position:-130% 0}}
+
+/* ---------- EMPTY STATE ---------- */
+.empty{
+  padding:26px 22px;border-radius:var(--r-lg);text-align:center;
+  background:var(--glass);border:1px dashed var(--border-2);backdrop-filter:blur(14px);
+}
+.empty svg{width:38px;height:38px;fill:var(--muted);opacity:.7;margin-bottom:10px}
+.empty h4{margin:0 0 6px;font-size:.96rem;font-weight:800}
+.empty p{margin:0 auto;max-width:56ch;font-size:.81rem;color:var(--muted);line-height:1.6}
+.empty .card-actions{margin-top:14px;justify-content:center}
+
+/* ============================================================
+   HELPLINE GROUP CARDS
+   ============================================================ */
+.hgroup{margin-bottom:30px;scroll-margin-top:150px}
+.hgrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),1fr))}
+.ccard{
+  display:flex;flex-direction:column;gap:11px;padding:16px;border-radius:var(--r-lg);
+  background:var(--glass);border:1px solid var(--border);backdrop-filter:blur(16px);box-shadow:var(--shadow);
+  animation:cardIn .5s var(--ease) both;position:relative;overflow:hidden;
+  transition:transform .3s var(--ease),border-color .3s;
+}
+.ccard:hover{transform:translateY(-4px);border-color:var(--border-2)}
+.ccard::before{content:'';position:absolute;inset:0 auto 0 0;width:3px;background:var(--accent,var(--grad-sos))}
+.ccard-top{display:flex;gap:11px;align-items:center}
+.avatar{
+  width:44px;height:44px;flex:0 0 auto;border-radius:50%;display:grid;place-items:center;
+  font-weight:800;font-size:.86rem;color:#fff;background:var(--grad-brand);letter-spacing:-.02em;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.34);
+}
+.avatar.a2{background:var(--grad-cool)}
+.avatar.a3{background:var(--grad-safe)}
+.avatar.a4{background:linear-gradient(135deg,#ff7a18,#ffb020)}
+.avatar.a5{background:linear-gradient(135deg,#8b5cf6,#ff5c9e)}
+.avatar.a6{background:linear-gradient(135deg,#64748b,#0ea5e9)}
+.avatar.a7{background:linear-gradient(135deg,#22c55e,#84cc16)}
+.avatar.a8{background:linear-gradient(135deg,#f59e0b,#ef4444)}
+
+/* ============================================================
+   WOMEN'S SAFETY
+   ============================================================ */
+.safety-hero{
+  position:relative;overflow:hidden;padding:clamp(20px,4.4vw,34px);border-radius:var(--r-xl);
+  background:linear-gradient(135deg,rgba(255,92,158,.20),rgba(139,92,246,.16) 50%,rgba(255,59,92,.16));
+  border:1px solid rgba(255,92,158,.34);backdrop-filter:blur(18px);box-shadow:var(--shadow-lg);
+  animation:riseIn .6s var(--ease) both;
+}
+.safety-hero::before{
+  content:'';position:absolute;top:-55%;left:50%;width:420px;height:420px;transform:translateX(-50%);border-radius:50%;
+  background:radial-gradient(circle,rgba(255,92,158,.32),transparent 66%);animation:orb 14s ease-in-out infinite alternate;
+}
+.safety-inner{position:relative;z-index:1;display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.safety-copy{flex:1 1 330px;min-width:0}
+.safety-copy h3{margin:12px 0 8px;font-size:clamp(1.35rem,4.2vw,2rem);font-weight:800;letter-spacing:-.03em;line-height:1.15}
+.safety-copy h3 em{font-style:normal;background:linear-gradient(135deg,#ff5c9e,#8b5cf6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.safety-copy p{margin:0;font-size:.9rem;color:var(--text-2);max-width:56ch}
+.safety-tag{
+  display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:var(--r-full);
+  background:rgba(255,92,158,.18);border:1px solid rgba(255,92,158,.4);color:#ff5c9e;
+  font-size:.69rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+}
+html[data-theme="light"] .safety-tag{color:#be185d}
+
+.sos-big{
+  flex:0 0 auto;position:relative;width:clamp(148px,30vw,196px);height:clamp(148px,30vw,196px);border-radius:50%;
+  border:none;cursor:pointer;font-family:inherit;color:#fff;display:grid;place-items:center;text-align:center;
+  background:linear-gradient(135deg,#ff2d55 0%,#ff5c9e 45%,#8b5cf6 100%);
+  box-shadow:0 26px 64px -20px rgba(255,45,85,.95), inset 0 2px 0 rgba(255,255,255,.4);
+  transition:transform .3s var(--ease);
+}
+.sos-big:hover{transform:scale(1.05)}
+.sos-big:active{transform:scale(.95)}
+.sos-big:disabled{cursor:progress}
+.sos-big .t1{font-size:clamp(1.25rem,4vw,1.7rem);font-weight:800;letter-spacing:.1em;line-height:1}
+.sos-big .t2{font-size:.63rem;font-weight:700;opacity:.95;margin-top:6px;letter-spacing:.06em;padding:0 14px;display:block}
+.sos-big::before,.sos-big::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid rgba(255,45,85,.6);animation:orbRing 2.4s var(--ease) infinite}
+.sos-big::after{animation-delay:1.2s}
+
+.geo-panel{display:grid;gap:10px;margin-top:18px;padding:16px;border-radius:var(--r-lg);background:var(--glass-2);border:1px solid var(--border)}
+.geo-row{display:flex;gap:11px;align-items:flex-start;font-size:.82rem;flex-wrap:wrap}
+.geo-row svg{width:17px;height:17px;fill:var(--muted);flex:0 0 auto;margin-top:2px}
+.geo-row .k{font-weight:800;color:var(--text);min-width:74px}
+.geo-row .v{color:var(--text-2);word-break:break-word;min-width:0;flex:1 1 200px}
+.geo-row .v a{color:var(--teal);text-decoration:none}
+html[data-theme="light"] .geo-row .v a{color:#0e7490}
+
+.msg-box{
+  width:100%;min-height:132px;padding:14px;border-radius:var(--r-md);font-family:inherit;font-size:.83rem;line-height:1.6;resize:vertical;
+  background:var(--glass);border:1px solid var(--border);color:var(--text);
+}
+.msg-box:focus{outline:none;border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,92,158,.16)}
+
+.tool-row{display:flex;gap:9px;flex-wrap:wrap}
+.tool{
+  display:inline-flex;align-items:center;gap:9px;padding:12px 15px;border-radius:var(--r-md);cursor:pointer;
+  background:var(--glass);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:.82rem;font-weight:700;
+  position:relative;overflow:hidden;text-decoration:none;
+  transition:transform .25s var(--ease),background .25s,border-color .25s;
+}
+.tool:hover{transform:translateY(-2px);background:var(--glass-2);border-color:var(--border-2)}
+.tool svg{width:16px;height:16px;fill:currentColor}
+.tool.on{background:var(--grad-sos);color:#fff;border-color:transparent}
+
+.quick-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));align-items:end}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field label{font-size:.7rem;font-weight:800;color:var(--muted);letter-spacing:.03em;text-transform:uppercase}
+.field input{
+  width:100%;padding:11px 12px;border-radius:11px;font-family:inherit;font-size:.84rem;
+  background:var(--glass);border:1px solid var(--border);color:var(--text);
+}
+.field input:focus{outline:none;border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,92,158,.14)}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:18px}
+.modal.open{display:flex}
+.modal-bg{position:absolute;inset:0;background:rgba(4,7,16,.72);backdrop-filter:blur(7px);animation:fade .3s ease both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal-card{
+  position:relative;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;padding:24px;
+  border-radius:var(--r-xl);background:var(--panel-solid);border:1px solid var(--border-2);
+  box-shadow:var(--shadow-lg);animation:pop .42s var(--ease) both;
+}
+@keyframes pop{from{opacity:0;transform:translateY(22px) scale(.96)}to{opacity:1;transform:none}}
+.modal-card h3{margin:0 0 6px;font-size:1.15rem;font-weight:800;letter-spacing:-.02em;padding-right:44px}
+.modal-card .msub{margin:0 0 16px;font-size:.82rem;color:var(--muted)}
+.modal-x{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:11px;border:1px solid var(--border);background:var(--glass-2);color:var(--text);cursor:pointer;font-size:18px;line-height:1;display:grid;place-items:center}
+.modal-x:hover{background:var(--glass-3)}
+.msg-preview{
+  padding:14px;border-radius:var(--r-md);background:var(--glass-2);border:1px solid var(--border);
+  font-size:.82rem;line-height:1.62;white-space:pre-wrap;word-break:break-word;color:var(--text-2);
+  max-height:190px;overflow-y:auto;
+}
+.modal-actions{display:grid;gap:9px;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));margin-top:16px}
+.modal-note{margin-top:14px;font-size:.74rem;color:var(--muted);line-height:1.55}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toasts{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;gap:9px;width:min(94vw,420px);pointer-events:none}
+.toast{
+  display:flex;gap:11px;align-items:flex-start;padding:13px 16px;border-radius:var(--r-md);
+  background:var(--panel-solid);border:1px solid var(--border-2);box-shadow:var(--shadow-lg);
+  font-size:.82rem;font-weight:600;color:var(--text);animation:toastIn .4s var(--ease) both;
+}
+@keyframes toastIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.toast.out{animation:toastOut .35s var(--ease) both}
+@keyframes toastOut{to{opacity:0;transform:translateY(12px)}}
+.toast svg{width:17px;height:17px;fill:var(--green);flex:0 0 auto;margin-top:2px}
+.toast.bad svg{fill:var(--red)}
+.toast.info svg{fill:var(--amber)}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-foot{
+  margin-top:52px;padding:34px 0 40px;border-top:1px solid var(--border);
+  background:linear-gradient(180deg,transparent,var(--glass));
+  position:relative;overflow:hidden;
+}
+.site-foot::before{
+  content:'';position:absolute;top:-70%;left:50%;width:560px;height:560px;transform:translateX(-50%);border-radius:50%;
+  background:radial-gradient(circle,rgba(255,59,92,.14),transparent 68%);pointer-events:none;
+}
+.foot-inner{position:relative;z-index:1;display:grid;gap:26px;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+.foot-block h4{margin:0 0 11px;font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.credit{
+  display:inline-flex;align-items:center;gap:9px;font-size:1rem;font-weight:800;letter-spacing:-.015em;
+  background:var(--grad-sos);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.foot-links{display:flex;flex-wrap:wrap;gap:9px}
+.flink{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 15px;border-radius:var(--r-full);text-decoration:none;
+  font-size:.82rem;font-weight:800;border:1px solid var(--border-2);color:var(--text);background:var(--glass-2);
+  transition:transform .25s var(--ease),filter .25s,box-shadow .25s;word-break:break-word;
+}
+.flink:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.flink svg{width:16px;height:16px;fill:currentColor;flex:0 0 auto}
+.flink.ig{background:linear-gradient(135deg,#f58529,#dd2a7b 45%,#8134af 75%,#515bd4);color:#fff;border-color:transparent}
+.flink.wa{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border-color:transparent}
+.donate{padding:16px;border-radius:var(--r-lg);background:var(--glass-2);border:1px solid var(--border-2)}
+.donate .dtxt{font-size:.88rem;font-weight:700;margin:0 0 10px;color:var(--text)}
+.donate .dpay{
+  display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:12px;
+  background:var(--glass);border:1px dashed var(--border-2);font-size:.81rem;font-weight:700;color:var(--text-2);
+  word-break:break-word;
+}
+.donate .dpay svg{width:16px;height:16px;fill:var(--amber);flex:0 0 auto}
+.donate .upibtn{margin-top:10px;width:100%;justify-content:center}
+.foot-legal{
+  margin-top:26px;padding-top:18px;border-top:1px solid var(--border);
+  display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  font-size:.73rem;color:var(--muted);line-height:1.65;
+}
+.foot-legal a{color:var(--text-2);text-decoration:none;font-weight:700}
+.foot-legal a:hover{color:var(--red);text-decoration:underline}
+.foot-legal .osm-note{max-width:66ch}
+
+/* ============================================================
+   BACK TO TOP
+   ============================================================ */
+.totop{
+  position:fixed;right:16px;bottom:18px;z-index:90;width:46px;height:46px;border-radius:14px;cursor:pointer;
+  display:grid;place-items:center;border:1px solid var(--border-2);background:var(--panel-solid);color:var(--text);
+  box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s var(--ease);
+  backdrop-filter:blur(14px);
+}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+.totop svg{width:19px;height:19px;fill:currentColor}
+
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:860px){
+  .head-actions .pill{display:none}
+}
+@media(max-width:720px){
+  .brand-mark{width:44px;height:44px;border-radius:14px}
+  .brand-mark svg{width:24px;height:24px}
+  .brand-txt p{font-size:.7rem}
+  .hero-inner,.safety-inner{gap:20px}
+  .sos-orb,.sos-big{margin-inline:auto}
+  .hero-copy,.safety-copy{text-align:center;display:flex;flex-direction:column;align-items:center}
+  .hero-copy p,.safety-copy p{margin-inline:auto}
+  .hero-facts,.tagline,.safety-tag{justify-content:center}
+  .cat-head .cat-count{margin-left:0;width:auto}
+  .geo-row .k{min-width:62px;flex:0 0 auto}
+  .toolbar{gap:8px}
+  .search{flex:1 1 100%}
+  select.sel{flex:1 1 100%}
+  .btn-ghost{flex:1 1 calc(50% - 5px);justify-content:center}
+  .modal-card{padding:20px;border-radius:24px}
+}
+@media(max-width:430px){
+  .grid,.grid.police,.hgrid{grid-template-columns:1fr}
+  .card-actions .btn{flex:1 1 calc(50% - 4px)}
+  .btn-call{flex:1 1 100%}
+  .hero-copy h2{font-size:1.42rem}
+  .sos-orb,.sos-big{width:150px;height:150px}
+  .toasts{bottom:14px;width:calc(100vw - 24px)}
+  .totop{right:12px;bottom:12px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+
+@media print{
+  .tabbar-outer,.toolbar,.bg-aurora,.bg-grid,.bg-scan,.totop,.sos-orb{display:none!important}
+  .panel{display:block!important}
+  body{background:#fff;color:#000}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to emergency directory</a>
+<div class="bg-layer"></div>
+<div class="bg-aurora"></div>
+<div class="bg-grid"></div>
+<div class="bg-scan"></div>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site-head wrap">
+  <div class="head-row">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 2 3.5 5.6v6.1c0 5 3.6 9.6 8.5 10.8 4.9-1.2 8.5-5.8 8.5-10.8V5.6L12 2Zm1 5v4h4v2h-4v4h-2v-4H7v-2h4V7h2Z"/></svg>
+      </div>
+      <div class="brand-txt">
+        <h1>Kolkata SOS</h1>
+        <p>One-stop emergency directory &middot; Kolkata, West Bengal</p>
+      </div>
+    </div>
+    <div class="head-actions">
+      <span class="pill load" id="statusPill"><span class="dot"></span><span id="statusTxt">Loading…</span></span>
+      <button class="icon-btn" id="themeBtn" type="button" title="Toggle light / dark theme" aria-label="Toggle light or dark theme">
+        <svg class="i-sun" viewBox="0 0 24 24"><path d="M12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-13a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0V5a1 1 0 0 1 1-1Zm0 14a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0v-1a1 1 0 0 1 1-1ZM4 12a1 1 0 0 1 1-1h1a1 1 0 0 1 0 2H5a1 1 0 0 1-1-1Zm14 0a1 1 0 0 1 1-1h1a1 1 0 0 1 0 2h-1a1 1 0 0 1-1-1ZM6.3 6.3a1 1 0 0 1 1.4 0l.7.7a1 1 0 0 1-1.4 1.4l-.7-.7a1 1 0 0 1 0-1.4Zm9.3 9.3a1 1 0 0 1 1.4 0l.7.7a1 1 0 0 1-1.4 1.4l-.7-.7a1 1 0 0 1 0-1.4Zm2.1-9.3a1 1 0 0 1 0 1.4l-.7.7a1 1 0 1 1-1.4-1.4l.7-.7a1 1 0 0 1 1.4 0ZM7.7 15.6a1 1 0 0 1 0 1.4l-.7.7a1 1 0 0 1-1.4-1.4l.7-.7a1 1 0 0 1 1.4 0Z"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24"><path d="M20.7 14.6A8.9 8.9 0 0 1 9.4 3.3 9 9 0 1 0 20.7 14.6Z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================== HERO ===================== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <span class="tagline">⚡ Emergency · Kolkata</span>
+        <h2>Every emergency number for <em>Kolkata</em>, in one place.</h2>
+        <p>Verified government helplines for police, fire, ambulance, cyber crime, railways, disaster, children and senior citizens — plus every hospital and police station in the city with a one-tap map link.</p>
+        <div class="hero-facts">
+          <span class="fact">📞 <b id="factHelplines">—</b> official helplines</span>
+          <span class="fact">🏥 <b id="factPlaces">—</b> hospitals &amp; police stations</span>
+          <span class="fact">✅ <b>Zero</b> placeholder data</span>
+        </div>
+      </div>
+      <button class="sos-orb" id="heroSos" type="button" aria-label="Open Women's Safety SOS panel">
+        <span>
+          <span class="lbl">SOS</span>
+          <span class="sub">TAP FOR HELP</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================== QUICK HELPLINES ===================== -->
+  <div class="strip-head">
+    <h3>Dial these first</h3>
+    <span>Government-verified · tap any card to call</span>
+  </div>
+  <div class="strip" id="helplineStrip" role="list" aria-label="Priority emergency helplines"></div>
+</header>
+
+<!-- ===================== MAIN ===================== -->
+<main id="main" class="wrap">
+
+  <div class="tabbar-outer">
+    <div class="tabbar" role="tablist" aria-label="Emergency sections">
+      <button class="tab" role="tab" data-cat="helplines" aria-selected="true" id="tab-helplines" aria-controls="panel-helplines">
+        <svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .6 3.6 1 1 0 0 1-.25 1l-2.25 2.2Z"/></svg>
+        Helplines <span class="cnt" data-cnt="helplines">0</span>
+      </button>
+      <button class="tab" role="tab" data-cat="hospitals" aria-selected="false" id="tab-hospitals" aria-controls="panel-hospitals">
+        <svg viewBox="0 0 24 24"><path d="M11 3h2v4h4v2h-4v4h-2V9H7V7h4V3ZM5 15h14v6H5v-6Z"/></svg>
+        Hospitals <span class="cnt" data-cnt="hospitals">0</span>
+      </button>
+      <button class="tab" role="tab" data-cat="police" aria-selected="false" id="tab-police" aria-controls="panel-police">
+        <svg viewBox="0 0 24 24"><path d="M12 2 4 5.5v5.8c0 4.9 3.4 9.4 8 10.7 4.6-1.3 8-5.8 8-10.7V5.5L12 2Zm0 4.2 1.6 3.3 3.6.5-2.6 2.6.6 3.6-3.2-1.7-3.2 1.7.6-3.6L6.8 10l3.6-.5L12 6.2Z"/></svg>
+        Police Stations <span class="cnt" data-cnt="police">0</span>
+      </button>
+      <button class="tab tab-sos" role="tab" data-cat="safety" aria-selected="false" id="tab-safety" aria-controls="panel-safety">
+        <svg viewBox="0 0 24 24"><path d="M12 2 4 5.5v5.8c0 4.9 3.4 9.4 8 10.7 4.6-1.3 8-5.8 8-10.7V5.5L12 2Zm0 5a2.6 2.6 0 0 1 2.6 2.6c0 1.4-.9 2.2-1.6 2.9-.5.5-.6.8-.6 1.5h-1.6c0-1.2.2-1.8.9-2.5.6-.6 1.1-1 1.1-1.9a1.2 1.2 0 0 0-2.4 0H9.4A2.6 2.6 0 0 1 12 7Zm-.8 8.6h1.6V18h-1.6v-2.4Z"/></svg>
+        Women's Safety <span class="cnt" data-cnt="safety">0</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================== TOOLBAR (directory tabs only) ===================== -->
+  <div class="toolbar" id="toolbar">
+    <div class="search" id="searchWrap">
+      <svg viewBox="0 0 24 24"><path d="M10 2a8 8 0 1 0 4.9 14.3l5.4 5.4 1.4-1.4-5.4-5.4A8 8 0 0 0 10 2Zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/></svg>
+      <input id="search" type="search" placeholder="Search hospital, police station, area…" autocomplete="off" aria-label="Search the emergency directory" />
+      <button class="clr" id="searchClr" type="button" aria-label="Clear search">×</button>
+    </div>
+    <select class="sel" id="sortSel" aria-label="Sort results">
+      <option value="callable">Sort: Callable first</option>
+      <option value="near">Sort: Nearest to me</option>
+      <option value="az">Sort: Name A–Z</option>
+    </select>
+    <button class="btn-ghost" id="filterPhone" type="button" aria-pressed="false">
+      <svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .6 3.6 1 1 0 0 1-.25 1l-2.25 2.2Z"/></svg>
+      Callable only
+    </button>
+    <button class="btn-ghost" id="locBtn" type="button">
+      <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>
+      Use my location
+    </button>
+    <button class="btn-ghost" id="reloadBtn" type="button">
+      <svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7Z"/></svg>
+      Reload data
+    </button>
+  </div>
+
+  <!-- ===================== BANNERS ===================== -->
+  <div class="banner" id="errBanner" role="alert">
+    <svg viewBox="0 0 24 24"><path d="M12 2 1 21h22L12 2Zm1 15h-2v-2h2v2Zm0-4h-2V9h2v4Z"/></svg>
+    <div>
+      <div class="bt" id="errTitle">Couldn't load the directory data</div>
+      <div class="bd" id="errBody"></div>
+    </div>
+  </div>
+
+  <!-- ===================== PANELS ===================== -->
+  <section class="panel active" id="panel-helplines" role="tabpanel" aria-labelledby="tab-helplines">
+    <div id="body-helplines"></div>
+  </section>
+
+  <section class="panel" id="panel-hospitals" role="tabpanel" aria-labelledby="tab-hospitals">
+    <div id="body-hospitals"></div>
+  </section>
+
+  <section class="panel" id="panel-police" role="tabpanel" aria-labelledby="tab-police">
+    <div id="body-police"></div>
+  </section>
+
+  <!-- ===================== WOMEN'S SAFETY ===================== -->
+  <section class="panel" id="panel-safety" role="tabpanel" aria-labelledby="tab-safety">
+    <div class="safety-hero">
+      <div class="safety-inner">
+        <div class="safety-copy">
+          <span class="safety-tag">🛡️ Women's Safety</span>
+          <h3>One tap sends your <em>live location</em> to whoever you choose.</h3>
+          <p>Press SOS. Your browser asks for your exact GPS position, then we build a ready-to-send alert containing a Google Maps link to where you are — and hand it to WhatsApp, email or SMS.</p>
+          <div class="hero-facts" style="margin-top:16px">
+            <span class="fact">📍 <b>Live GPS</b> attached</span>
+            <span class="fact">🔊 <b>Siren</b> built in</span>
+            <span class="fact">🔒 <b>Nothing</b> is sent until you tap</span>
+          </div>
+        </div>
+        <button class="sos-big" id="sosBig" type="button" aria-label="Send SOS alert with my live location">
+          <span>
+            <span class="t1">SOS</span>
+            <span class="t2">SEND ALERT + MY LOCATION</span>
+          </span>
+        </button>
+      </div>
+
+      <div class="geo-panel">
+        <div class="geo-row">
+          <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>
+          <span class="k">Location</span>
+          <span class="v" id="geoStatus">Not fetched yet — press SOS or “Get my location”.</span>
+        </div>
+        <div class="geo-row">
+          <svg viewBox="0 0 24 24"><path d="M12 2 1 21h22L12 2Zm1 15h-2v-2h2v2Zm0-4h-2V9h2v4Z"/></svg>
+          <span class="k">Accuracy</span>
+          <span class="v" id="geoAcc">—</span>
+        </div>
+        <div class="geo-row">
+          <svg viewBox="0 0 24 24"><path d="M3 6h11v9H3V6Zm12 3h3.2l2.8 3.4V15h-6V9Z"/></svg>
+          <span class="k">Nearest</span>
+          <span class="v" id="geoNearest">Fetch your location to see the closest hospital and police station.</span>
+        </div>
+        <div class="tool-row" style="margin-top:4px">
+          <button class="tool" id="geoTool" type="button">
+            <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>
+            Get my location
+          </button>
+          <button class="tool" id="sirenTool" type="button" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7v6H4v3h16v-3h-1V9a7 7 0 0 0-7-7Zm-2 19a2 2 0 0 0 4 0h-4Z"/></svg>
+            Sound siren
+          </button>
+          <button class="tool" id="fakeCallTool" type="button">
+            <svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .6 3.6 1 1 0 0 1-.25 1l-2.25 2.2Z"/></svg>
+            Fake incoming call
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOS message template -->
+    <div class="cat" style="margin-top:26px">
+      <div class="cat-head">
+        <div class="cat-ico ico-safe"><svg viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/></svg></div>
+        <div>
+          <h3>Your pre-written SOS message</h3>
+          <p>The <code>{location}</code> tag becomes a live Google Maps link the moment you press SOS</p>
+        </div>
+      </div>
+      <textarea class="msg-box" id="msgTemplate" spellcheck="false" aria-label="SOS message template"></textarea>
+      <div class="tool-row" style="margin-top:10px">
+        <button class="tool" id="msgSave" type="button">
+          <svg viewBox="0 0 24 24"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4Zm-5 16a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm3-10H6V5h9v4Z"/></svg>
+          Save message
+        </button>
+        <button class="tool" id="msgReset" type="button">
+          <svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7Z"/></svg>
+          Reset to default
+        </button>
+      </div>
+    </div>
+
+    <!-- Send to anyone -->
+    <div class="cat">
+      <div class="cat-head">
+        <div class="cat-ico ico-safe"><svg viewBox="0 0 24 24"><path d="M2 21 23 12 2 3v7l15 2-15 2v7Z"/></svg></div>
+        <div>
+          <h3>Send the alert to anyone</h3>
+          <p>Type any phone number or email — nothing is stored, nothing is uploaded</p>
+        </div>
+      </div>
+      <div class="geo-panel" style="margin-top:0">
+        <div class="quick-grid">
+          <div class="field">
+            <label for="waNum">Phone number</label>
+            <input id="waNum" type="tel" inputmode="tel" placeholder="+91XXXXXXXXXX" maxlength="18" autocomplete="off" />
+          </div>
+          <button class="tool" id="waSend" type="button" style="background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border-color:transparent;justify-content:center">
+            <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Z"/></svg>
+            WhatsApp
+          </button>
+          <button class="tool" id="smsSend" type="button" style="justify-content:center">
+            <svg viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/></svg>
+            SMS
+          </button>
+          <div class="field">
+            <label for="mailTo">Email address</label>
+            <input id="mailTo" type="email" placeholder="name@example.com" maxlength="80" autocomplete="off" />
+          </div>
+          <button class="tool" id="mailSend" type="button" style="justify-content:center">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg>
+            Email
+          </button>
+        </div>
+        <div class="tool-row" style="margin-top:10px">
+          <button class="tool" id="copySos" type="button">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"/></svg>
+            Copy SOS message
+          </button>
+          <button class="tool" id="shareSos" type="button">
+            <svg viewBox="0 0 24 24"><path d="M18 16a3 3 0 0 0-2.2 1l-7-4a3 3 0 0 0 0-2l7-4A3 3 0 1 0 15 5l-7 4a3 3 0 1 0 0 6l7 4a3 3 0 1 0 3-3Z"/></svg>
+            Share…
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Official women's safety helplines -->
+    <div class="cat">
+      <div class="cat-head">
+        <div class="cat-ico ico-hl"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .6 3.6 1 1 0 0 1-.25 1l-2.25 2.2Z"/></svg></div>
+        <div>
+          <h3>Women's safety helplines</h3>
+          <p>Government helplines — free, 24×7, and each with a pre-written alert ready to send</p>
+        </div>
+        <span class="cat-count" id="safeCount">—</span>
+      </div>
+      <div class="hgrid" id="safeHelplines"></div>
+    </div>
+  </section>
+
+  <p class="sr" id="liveRegion" aria-live="polite"></p>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site-foot">
+  <div class="wrap foot-inner">
+    <div class="foot-block">
+      <h4>Credits</h4>
+      <span class="credit">Created by Rounak Adhikary.</span>
+      <div class="foot-links" style="margin-top:12px">
+        <a class="flink ig" href="https://instagram.com/ig_chromozome" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.8-.1Zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.5.2-1.9.3-.5.2-.8.4-1.1.7-.3.3-.5.6-.7 1.1-.1.4-.3.8-.3 1.9-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.5.3 1.9.2.5.4.8.7 1.1.3.3.6.5 1.1.7.4.1.8.3 1.9.3 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.5-.2 1.9-.3.5-.2.8-.4 1.1-.7.3-.3.5-.6.7-1.1.1-.4.3-.8.3-1.9.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.5-.3-1.9-.2-.5-.4-.8-.7-1.1-.3-.3-.6-.5-1.1-.7-.4-.1-.8-.3-1.9-.3-1.2-.1-1.6-.1-4.7-.1Zm0 3.1a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4Zm5.2-2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z"/></svg>
+          @ig_chromozome
+        </a>
+      </div>
+    </div>
+
+    <div class="foot-block">
+      <h4>Support this project</h4>
+      <div class="donate">
+        <p class="dtxt">Feel free to buy me coffee for more such projects</p>
+        <div class="dpay">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16v3H4V4Zm0 5h16v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9Zm4 3v2h8v-2H8Z"/></svg>
+          <span>GPay/PhonePe/UPI - 8017414711 / 8017414711@yespop</span>
+        </div>
+        <a class="flink wa upibtn" id="upiBtn" href="#" style="margin-top:10px">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Z"/></svg>
+          Pay via UPI app
+        </a>
+      </div>
+    </div>
+
+    <div class="foot-block">
+      <h4>Say hello</h4>
+      <p style="margin:0 0 12px;font-size:.84rem;color:var(--muted)">Found a wrong number, or want your service listed? Message me.</p>
+      <div class="foot-links">
+        <a class="flink wa" href="https://wa.me/918017414711" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1a12 12 0 0 1-6.9-6c-.5-.9-.8-1.7-.7-2.4 0-.7.4-1.4.8-1.7.2-.2.4-.2.6-.2h.4c.2 0 .4 0 .6.4l.8 1.9c.1.2 0 .4-.1.5l-.4.5c-.1.2-.3.3-.1.6a9 9 0 0 0 4.1 3.5c.3.1.4.1.6-.1l.7-.9c.2-.2.3-.2.6-.1l1.8.9c.3.1.4.2.4.4 0 .2 0 .7-.1 1.2Z"/></svg>
+          +918017414711
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap foot-legal">
+    <span class="osm-note">
+      Directory data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>, retrieved via the
+      <a href="https://overpass-api.de/" target="_blank" rel="noopener noreferrer">Overpass API</a> under the ODbL and bundled with this site.
+      Official helpline numbers are published by the Government of India and the Government of West Bengal.
+      This is a community aid tool — always dial <b>112</b> in a life-threatening emergency.
+    </span>
+    <span id="lastUpdated">Data not loaded yet.</span>
+  </div>
+</footer>
+
+<button class="totop" id="toTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24"><path d="M12 4 4 12h5v8h6v-8h5L12 4Z"/></svg>
+</button>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<!-- ===================== MODAL ===================== -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-bg" data-close></div>
+  <div class="modal-card">
+    <button class="modal-x" type="button" data-close aria-label="Close">×</button>
+    <h3 id="modalTitle">Send SOS alert</h3>
+    <p class="msub" id="modalSub"></p>
+    <div class="msg-preview" id="modalMsg"></div>
+    <div class="modal-actions" id="modalActions"></div>
+    <p class="modal-note" id="modalNote"></p>
+  </div>
+</div>
+<script>
+"use strict";
+/* ==================================================================
+   KOLKATA SOS — One-Stop Emergency Directory
+   ------------------------------------------------------------------
+   Directory data (hospitals + police stations) is bundled in
+   data/kolkata-sos.json, which sits next to this file in the repo and
+   is generated once by build-data.mjs from OpenStreetMap.
+   The page never calls the Overpass API at runtime.
+
+   Official helpline numbers below are published by the Government of
+   India / Government of West Bengal — each entry records its source.
+   ================================================================== */
+
+/* ------------------------------------------------------------------
+   1. CONFIGURATION
+   ------------------------------------------------------------------ */
+const DATA_FILE = "data/kolkata-sos.json";
+const CACHE_KEY = "ksos_data_v3";
+
+/* ------------------------------------------------------------------
+   2. VERIFIED HELPLINE DATA
+   Every number below is published by an official government source;
+   the source is recorded on each entry and shown on the card.
+   ------------------------------------------------------------------ */
+const HELPLINE_GROUPS = [
+  {
+    id:"emergency", title:"All-in-one emergency", icon:"ico-hl",
+    accent:"linear-gradient(135deg,#ff3b5c,#c81e3c)",
+    desc:"Dial these first in any life-threatening situation",
+    items:[
+      { num:"112", label:"Emergency Response Support System", note:"One number for police, fire, ambulance and disaster — 24×7", src:"Ministry of Home Affairs", url:"https://www.mha.gov.in/en/commoncontent/emergency-response-support-system-erss" },
+      { num:"100", label:"Police", note:"Police control room", src:"Govt. of West Bengal", url:"https://s24pgs.gov.in/helpline/" },
+      { num:"101", label:"Fire Brigade", note:"Fire & emergency services", src:"Govt. of West Bengal", url:"https://s24pgs.gov.in/helpline/" },
+      { num:"102", label:"Ambulance — National Ambulance Service", note:"Free government ambulance", src:"Ministry of Health & Family Welfare", url:"https://www.india.gov.in/directory/helpline" }
+    ]
+  },
+  {
+    id:"women", title:"Women's safety", icon:"ico-safe",
+    accent:"linear-gradient(135deg,#ff5c9e,#8b5cf6)",
+    desc:"For women in distress, harassment, stalking or domestic abuse",
+    items:[
+      { num:"1091", label:"Women Helpline — West Bengal", note:"Women in distress · also the anti-obscene calls cell", src:"Govt. of West Bengal", url:"https://s24pgs.gov.in/helpline/" },
+      { num:"181", label:"Women Helpline / Domestic Abuse", note:"National helpline, 24×7 and free", src:"Ministry of Women & Child Development", url:"https://www.wcd.gov.in/offerings/women--helpline--scheme" },
+      { num:"7827170170", label:"National Commission for Women", note:"Complaints, legal guidance and support", src:"National Commission for Women", url:"https://www.india.gov.in/directory/helpline" },
+      { num:"1800-2000-737", label:"Rape Crisis Helpline", note:"Crisis support and counselling for survivors", src:"Govt. of India", url:"https://www.india.gov.in/directory/helpline" }
+    ]
+  },
+  {
+    id:"cyber", title:"Cyber crime", icon:"ico-cyb",
+    accent:"linear-gradient(135deg,#8b5cf6,#22d3ee)",
+    desc:"Online fraud, stalking, morphed images and identity theft",
+    items:[
+      { num:"1930", label:"National Cyber Crime Helpline", note:"Report cyber crime · also file online at cybercrime.gov.in", src:"Ministry of Home Affairs", url:"https://cybercrime.gov.in/" }
+    ]
+  },
+  {
+    id:"railway", title:"Railways", icon:"ico-rail",
+    accent:"linear-gradient(135deg,#0ea5e9,#22d3ee)",
+    desc:"Train emergencies, security on board, medical help and complaints",
+    items:[
+      { num:"139", label:"RailMadad — Integrated Railway Helpline", note:"Enquiry, security, medical help and complaints. Security helpline 182 has been merged into 139", src:"Indian Railways", url:"https://railmadad.indianrailways.gov.in/" },
+      { num:"182", label:"Railway Security (RPF)", note:"Railway Protection Force — for crime or nuisance on trains and at stations", src:"Indian Railways", url:"https://182rpf.indianrailways.gov.in/SecurityHelpLine/" },
+      { num:"138", label:"Railway Customer Helpline", note:"Complaints and suggestions about rail services", src:"Indian Railways", url:"https://ser.indianrailways.gov.in/" },
+      { num:"1800-111-321", label:"Railway Catering Complaints", note:"Food quality and overcharging on trains", src:"Indian Railways", url:"https://swr.indianrailways.gov.in/" }
+    ]
+  },
+  {
+    id:"disaster", title:"Disaster & relief", icon:"ico-dis",
+    accent:"linear-gradient(135deg,#f59e0b,#ef4444)",
+    desc:"Floods, cyclones, earthquakes, building collapse and rescue",
+    items:[
+      { num:"1070", label:"Relief Commissioner for Natural Calamities", note:"State relief and disaster response", src:"Govt. of India", url:"https://www.india.gov.in/directory/helpline" },
+      { num:"1078", label:"National Disaster Management Authority", note:"NDMA helpline for disaster information", src:"NDMA", url:"https://ndma.gov.in/" },
+      { num:"011-24363260", label:"Disaster / NDRF Control Room", note:"Earthquake, flood and NDRF coordination", src:"Ministry of Home Affairs", url:"https://ndmindia.mha.gov.in/ndmi/contact-us" },
+      { num:"011-26701700", label:"NDMA Control Room", note:"NDMA headquarters control room, New Delhi", src:"NDMA", url:"https://ndma.gov.in/" }
+    ]
+  },
+  {
+    id:"child", title:"Children", icon:"ico-child",
+    accent:"linear-gradient(135deg,#22c55e,#84cc16)",
+    desc:"Any child in danger, distress, abuse or in need of care",
+    items:[
+      { num:"1098", label:"Child Helpline", note:"Free, 24×7, for any child in need of care and protection", src:"Ministry of Women & Child Development", url:"https://wcd.gov.in/child/child-helpline" },
+      { num:"112", label:"Emergency Response Support System", note:"Use 112 if a child is in immediate danger", src:"Ministry of Home Affairs", url:"https://www.mha.gov.in/en/commoncontent/emergency-response-support-system-erss" }
+    ]
+  },
+  {
+    id:"elderly", title:"Senior citizens & disability", icon:"ico-old",
+    accent:"linear-gradient(135deg,#8b5cf6,#6366f1)",
+    desc:"Elder abuse, neglect, pensions and support for persons with disabilities",
+    items:[
+      { num:"14567", label:"Elderline — Senior Citizens Helpline", note:"Toll-free, pan-India. Abuse, neglect, pension and legal guidance", src:"Ministry of Social Justice & Empowerment", url:"https://www.dosje.gov.in/schemes-and-services/elderline/" },
+      { num:"011-20893999", label:"Senior Citizens Helpline (Delhi)", note:"National helpline desk for older persons", src:"Ministry of Social Justice & Empowerment", url:"https://www.india.gov.in/directory/helpline" },
+      { num:"14456", label:"Persons with Disabilities Helpline", note:"Support for persons with disabilities (Divyangjan)", src:"Dept. of Empowerment of Persons with Disabilities", url:"https://www.india.gov.in/directory/helpline" }
+    ]
+  },
+  {
+    id:"road", title:"Road, highway & vehicle", icon:"ico-road",
+    accent:"linear-gradient(135deg,#64748b,#0ea5e9)",
+    desc:"Breakdowns, towing, cranes and road accidents",
+    items:[
+      { num:"1033", label:"National Highway Helpline", note:"24×7 ambulance, highway patrol and cranes for towing", src:"NHAI · IHMCL", url:"https://ihmcl.co.in/24x7-national-highways-helpline-1033/" },
+      { num:"1073", label:"Road Accident Helpline", note:"Emergency response for road accidents", src:"Ministry of Road Transport & Highways", url:"https://www.india.gov.in/directory/helpline" }
+    ]
+  },
+  {
+    id:"misc", title:"Other useful helplines", icon:"ico-misc",
+    accent:"linear-gradient(135deg,#475569,#94a3b8)",
+    desc:"Utilities and national support lines",
+    items:[
+      { num:"1906", label:"LPG Gas Leak Helpline", note:"Emergency response for cooking-gas leaks", src:"Ministry of Petroleum & Natural Gas", url:"https://www.india.gov.in/directory/helpline" },
+      { num:"1933", label:"National Narcotics Helpline (MANAS)", note:"Drug abuse prevention and counselling", src:"Ministry of Home Affairs", url:"https://www.india.gov.in/directory/helpline" }
+    ]
+  }
+];
+
+/* The 12 numbers shown in the always-visible strip at the top.
+   Deliberately includes fire (101), ambulance (102), cyber (1930) and
+   breakdown (1033/1073), which no longer have their own tab. */
+const PRIORITY_NUMBERS = ["112","100","101","102","1091","181","1930","1033","1073","139","1098","14567"];
+
+/* Women's safety helplines, each with its own pre-written alert.
+   {location} is swapped for a live Google Maps link. */
+const SAFETY_HELPLINES = [
+  { num:"112",        label:"All Emergencies (ERSS)",        note:"Police · fire · ambulance · disaster — 24×7",      src:"Ministry of Home Affairs",              msg:"EMERGENCY. I am in immediate danger and need help right now.\nMy exact location: {location}\nPlease send help to this spot immediately." },
+  { num:"1091",       label:"Women Helpline, West Bengal",   note:"Women in distress · anti-obscene calls",            src:"Govt. of West Bengal",                  msg:"I am a woman in distress and I need urgent assistance. I am currently at: {location}\nPlease call me back immediately or send help to this location." },
+  { num:"181",        label:"Women / Domestic Abuse",        note:"National women helpline — 24×7, free",              src:"Ministry of Women & Child Development", msg:"I am a woman facing a threat to my safety and I need help. My live location is: {location}\nPlease contact me and arrange assistance at this address." },
+  { num:"100",        label:"Police Control Room",           note:"Nearest police response",                           src:"Govt. of West Bengal",                  msg:"I need immediate police assistance. I am at: {location}\nPlease send a patrol to this location. I am not safe." },
+  { num:"7827170170", label:"National Commission for Women", note:"Complaints, legal guidance and support",            src:"National Commission for Women",         msg:"I wish to report a threat to my safety and request support. I am currently at: {location}\nPlease reach out to me as soon as possible." },
+  { num:"1800-2000-737", label:"Rape Crisis Helpline",       note:"Crisis support for survivors",                      src:"Govt. of India",                        msg:"I need urgent crisis support and counselling. I am at: {location}\nPlease contact me right away — this is time critical." },
+  { num:"1098",       label:"Child Helpline",                note:"For any child in distress",                         src:"Ministry of Women & Child Development", msg:"A child is in distress and needs protection. Location: {location}\nPlease respond urgently." },
+  { num:"1930",       label:"Cyber Crime — online abuse",    note:"Stalking, morphed images, online threats",          src:"Ministry of Home Affairs",              msg:"I am facing online harassment / stalking and I want to file a complaint. I am at: {location}\nPlease advise me and take action." }
+];
+
+const DEFAULT_MSG =
+"🚨 SOS — I need immediate help.\n\n" +
+"I am at this location: {location}\n\n" +
+"Please call me right now, or come to this spot.\n\n" +
+"Sent at {time} from the Kolkata SOS emergency directory.";
+
+const POLICE_SVG = '<svg viewBox="0 0 24 24"><path d="M12 2 4 5.5v5.8c0 4.9 3.4 9.4 8 10.7 4.6-1.3 8-5.8 8-10.7V5.5L12 2Zm0 4.2 1.6 3.3 3.6.5-2.6 2.6.6 3.6-3.2-1.7-3.2 1.7.6-3.6L6.8 10l3.6-.5L12 6.2Z"/></svg>';
+const HOSP_SVG   = '<svg viewBox="0 0 24 24"><path d="M11 3h2v4h4v2h-4v4h-2V9H7V7h4V3ZM5 15h14v6H5v-6Z"/></svg>';
+const PIN_SVG    = '<svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>';
+const PHONE_SVG  = '<svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .6 3.6 1 1 0 0 1-.25 1l-2.25 2.2Z"/></svg>';
+const MAIL_SVG   = '<svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg>';
+const WA_SVG     = '<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1a12 12 0 0 1-6.9-6c-.5-.9-.8-1.7-.7-2.4 0-.7.4-1.4.8-1.7.2-.2.4-.2.6-.2h.4c.2 0 .4 0 .6.4l.8 1.9c.1.2 0 .4-.1.5l-.4.5c-.1.2-.3.3-.1.6a9 9 0 0 0 4.1 3.5c.3.1.4.1.6-.1l.7-.9c.2-.2.3-.2.6-.1l1.8.9c.3.1.4.2.4.4 0 .2 0 .7-.1 1.2Z"/></svg>';
+const COPY_SVG   = '<svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"/></svg>';
+
+/* ------------------------------------------------------------------
+   3. TINY HELPERS
+   ------------------------------------------------------------------ */
+const $  = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+function esc(v){
+  return String(v == null ? "" : v)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+function debounce(fn, ms){
+  let t;
+  return function(){
+    const args = arguments, self = this;
+    clearTimeout(t);
+    t = setTimeout(() => fn.apply(self, args), ms);
+  };
+}
+function haversine(a, b, c, d){
+  const R = 6371, rad = Math.PI / 180;
+  const dLat = (c - a) * rad, dLon = (d - b) * rad;
+  const x = Math.sin(dLat/2)**2 + Math.cos(a*rad) * Math.cos(c*rad) * Math.sin(dLon/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(x));
+}
+function fmtDist(km){ return km < 1 ? Math.round(km*1000) + " m" : km.toFixed(km < 10 ? 1 : 0) + " km"; }
+
+function toast(msg, kind){
+  const wrap = $("#toasts");
+  if (!wrap) return;
+  const el = document.createElement("div");
+  el.className = "toast " + (kind || "");
+  const icons = {
+    "":'<svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"/></svg>',
+    bad:'<svg viewBox="0 0 24 24"><path d="M12 2 1 21h22L12 2Zm1 15h-2v-2h2v2Zm0-4h-2V9h2v4Z"/></svg>',
+    info:'<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"/></svg>'
+  };
+  el.innerHTML = (icons[kind] || icons[""]) + "<span>" + esc(msg) + "</span>";
+  wrap.appendChild(el);
+  setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 380); }, 4200);
+}
+function ripple(btn, x, y){
+  if (!btn || btn.dataset.norip) return;
+  const r = btn.getBoundingClientRect();
+  const s = Math.max(r.width, r.height);
+  const d = document.createElement("span");
+  d.className = "ripple";
+  d.style.width = d.style.height = s + "px";
+  d.style.left = (x - r.left - s/2) + "px";
+  d.style.top  = (y - r.top  - s/2) + "px";
+  btn.appendChild(d);
+  setTimeout(() => d.remove(), 620);
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest(".btn, .tool, .tab, .hl, .icon-btn");
+  if (b) ripple(b, e.clientX, e.clientY);
+}, true);
+
+/* ------------------------------------------------------------------
+   4. PHONE HELPERS
+   ------------------------------------------------------------------ */
+/** Short codes and toll-free numbers stay as-is; everything else gets +91. */
+function telHref(num){
+  const d = String(num || "").replace(/\D/g, "");
+  if (!d) return "";
+  if (/^1800/.test(d)) return d;                      // 1800-2000-737 → 1800200737
+  if (d.length <= 5) return d;                        // 112, 100, 1098, 14567, 139
+  if (d.length === 10) return "+91" + d;              // 7827170170
+  if (d.length === 11 && d[0] === "0") return "+91" + d.slice(1); // 011-24363260
+  if (d.length === 12 && d.slice(0,2) === "91") return "+" + d;
+  return d;
+}
+/** Return a WhatsApp-ready 91XXXXXXXXXX, or null when the number is not a mobile. */
+function mobileNumber(num){
+  const d = String(num || "").replace(/\D/g, "");
+  if (/^1800/.test(d)) return null;
+  if (d.length === 10 && /^[6-9]/.test(d)) return "91" + d;
+  if (d.length === 12 && d.slice(0,2) === "91" && /^[6-9]/.test(d.slice(2))) return d;
+  return null;
+}
+function prettyNum(num){
+  const s = String(num || "");
+  if (s.indexOf("-") !== -1) return s;                // 1800-2000-737
+  const d = s.replace(/\D/g, "");
+  if (d.length === 10 && /^[6-9]/.test(d)) return d.slice(0,5) + " " + d.slice(5);
+  if (d.length === 10) return d.slice(0,4) + " " + d.slice(4,7) + " " + d.slice(7);
+  return s;
+}
+/** Format a stored E.164 number for display. */
+function prettyE164(v){
+  const d = String(v || "").replace(/\D/g, "");
+  if (/^1800/.test(d)) return d.replace(/(\d{4})(\d{3})(\d+)/, "$1 $2 $3");
+  if (d.length === 12 && d.slice(0,2) === "91"){
+    const n = d.slice(2);
+    if (/^[6-9]/.test(n)) return "+91 " + n.slice(0,5) + " " + n.slice(5);
+    if (n.slice(0,2) === "33") return "+91 33 " + n.slice(2,6) + " " + n.slice(6);
+    return "+91 " + n;
+  }
+  if (d.length === 11 && d[0] === "0") return "+91 " + d.slice(1);
+  return String(v || "");
+}
+function copyText(text, quiet){
+  const done = () => { if (!quiet) toast("Copied to clipboard — paste it into any app."); };
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else fallbackCopy(text, done);
+}
+function fallbackCopy(text, cb){
+  const ta = document.createElement("textarea");
+  ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand("copy"); cb(); }
+  catch(_){ toast("Could not copy automatically — select the text manually.", "bad"); }
+  ta.remove();
+}
+
+/* ------------------------------------------------------------------
+   5. THEME
+   ------------------------------------------------------------------ */
+(function initTheme(){
+  let saved = null;
+  try { saved = localStorage.getItem("ksos_theme"); } catch(_){}
+  const sys = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", saved || sys);
+})();
+$("#themeBtn").addEventListener("click", () => {
+  const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  try { localStorage.setItem("ksos_theme", next); } catch(_){}
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", next === "dark" ? "#0b1020" : "#f4f6fc");
+});
+
+/* ------------------------------------------------------------------
+   6. STATE
+   ------------------------------------------------------------------ */
+const state = {
+  hospitals: [],
+  police: [],
+  meta: null,
+  loaded: false,
+  q: "",
+  sort: "callable",
+  phoneOnly: false,
+  userLoc: null,
+  activeCat: "helplines",
+  shown: { hospitals: 24, police: 24 }
+};
+const PAGE_SIZE = 24;
+
+/* ------------------------------------------------------------------
+   7. HELPLINE STRIP + GROUPED HELPLINE TAB
+   ------------------------------------------------------------------ */
+function allHelplineItems(){
+  const out = [];
+  HELPLINE_GROUPS.forEach(g => g.items.forEach(i => out.push(i)));
+  return out;
+}
+function findHelpline(num){
+  return allHelplineItems().filter(i => String(i.num) === String(num))[0] || { num, label:"", note:"", src:"", url:"" };
+}
+
+function renderStrip(){
+  const host = $("#helplineStrip");
+  if (!host) return;
+  host.innerHTML = PRIORITY_NUMBERS.map(num => {
+    const h = findHelpline(num);
+    return `<a class="hl" role="listitem" href="tel:${esc(telHref(h.num))}" title="${esc(h.label)} — source: ${esc(h.src)}">
+      <span class="n">${esc(prettyNum(h.num))}</span>
+      <span class="t">${esc(h.label || "")}</span>
+      <span class="src">${esc(h.note || "")}</span>
+    </a>`;
+  }).join("");
+}
+
+function helplineCardHTML(h, accent, idx){
+  const tel = telHref(h.num);
+  const mob = mobileNumber(h.num);
+  const rawMsg = (h.msg || "").replace(/\{location\}/g,
+    state.userLoc ? mapsLink(state.userLoc.lat, state.userLoc.lng) : "my current location (see my next message)");
+
+  const actions = [
+    `<a class="btn btn-call" href="tel:${esc(tel)}">${PHONE_SVG}Call ${esc(prettyNum(h.num))}</a>`
+  ];
+  if (mob)
+    actions.push(`<a class="btn btn-wa" href="https://wa.me/${mob}?text=${encodeURIComponent(rawMsg || h.label)}" target="_blank" rel="noopener noreferrer">${WA_SVG}WhatsApp</a>`);
+  if (h.msg)
+    actions.push(`<button class="btn btn-soft btn-sm" type="button" data-copy="${esc(rawMsg)}">${COPY_SVG}Copy alert</button>`);
+
+  return `<article class="ccard" style="--accent:${accent}">
+    <div class="ccard-top">
+      <div class="avatar a${(idx % 8) + 1}" aria-hidden="true">${esc(prettyNum(h.num).slice(0, 3))}</div>
+      <div style="min-width:0">
+        <h4 class="card-name" style="font-size:.94rem">${esc(h.label || prettyNum(h.num))}</h4>
+        <p class="card-sub">${esc(h.note || "")}</p>
+      </div>
+    </div>
+    <div class="chips">
+      ${mob ? '<span class="chip ok">WhatsApp ready</span>' : '<span class="chip">Voice call</span>'}
+      ${h.msg ? '<span class="chip hot">Alert ready</span>' : ""}
+      ${h.src ? `<span class="chip info">${esc(h.src)}</span>` : ""}
+    </div>
+    <div class="card-actions">${actions.join("")}</div>
+  </article>`;
+}
+
+/* Group icon glyphs, keyed by group id. */
+const GROUP_ICONS = {
+  emergency:'<svg viewBox="0 0 24 24"><path d="M12 2 4 5.5v5.8c0 4.9 3.4 9.4 8 10.7 4.6-1.3 8-5.8 8-10.7V5.5L12 2Z"/></svg>',
+  women:'<svg viewBox="0 0 24 24"><path d="M12 2 4 5.5v5.8c0 4.9 3.4 9.4 8 10.7 4.6-1.3 8-5.8 8-10.7V5.5L12 2Zm-1 5h2v2h2v2h-2v2h-2v-2H9V9h2V7Z"/></svg>',
+  cyber:'<svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 0-5 5v2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5Zm-3 7V7a3 3 0 0 1 6 0v2H9Zm3 4a1.6 1.6 0 0 1 .9 2.9V18h-1.8v-2.1A1.6 1.6 0 0 1 12 13Z"/></svg>',
+  railway:'<svg viewBox="0 0 24 24"><path d="M12 2c-4.4 0-8 .5-8 4v9.5A3.5 3.5 0 0 0 7.5 19L6 20.5v.5h2.2l2-2h3.6l2 2H18v-.5L16.5 19a3.5 3.5 0 0 0 3.5-3.5V6c0-3.5-3.6-4-8-4ZM7.5 17a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm3.5-6H6V8h5v3Zm2 0V8h5v3h-5Zm3.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"/></svg>',
+  disaster:'<svg viewBox="0 0 24 24"><path d="M12 2 1 21h22L12 2Zm1 15h-2v-2h2v2Zm0-4h-2V9h2v4Z"/></svg>',
+  child:'<svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 12c-4 0-8 2-8 4.5V21h16v-2.5C20 16 16 14 12 14Z"/></svg>',
+  elderly:'<svg viewBox="0 0 24 24"><path d="M12 4a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm-1 8h2l1 5h3l1.5 7h-2l-1-5H8.5l-1 5h-2L7 12h4Z"/></svg>',
+  road:'<svg viewBox="0 0 24 24"><path d="M11 2h2v5h-2V2Zm0 7h2v6h-2V9Zm0 8h2v5h-2v-5ZM4 2h2v20H4V2Zm14 0h2v20h-2V2Z"/></svg>',
+  misc:'<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"/></svg>'
+};
+
+function renderHelplinePanel(){
+  const host = $("#body-helplines");
+  if (!host) return;
+  host.innerHTML = HELPLINE_GROUPS.map(g => `
+    <div class="hgroup" id="hgroup-${g.id}">
+      <div class="cat-head">
+        <div class="cat-ico ${g.icon}">${GROUP_ICONS[g.id] || GROUP_ICONS.misc}</div>
+        <div><h3>${esc(g.title)}</h3><p>${esc(g.desc)}</p></div>
+        <span class="cat-count">${g.items.length} ${g.items.length === 1 ? "number" : "numbers"}</span>
+      </div>
+      <div class="hgrid">${g.items.map((h, i) => helplineCardHTML(h, g.accent, i)).join("")}</div>
+    </div>`).join("");
+
+  const badge = $('.cnt[data-cnt="helplines"]');
+  if (badge) badge.textContent = allHelplineItems().length;
+  const fh = $("#factHelplines");
+  if (fh) fh.textContent = allHelplineItems().length;
+}
+
+/* ------------------------------------------------------------------
+   8. DIRECTORY RENDERING (hospitals + police stations)
+   ------------------------------------------------------------------ */
+function sortItems(items, key){
+  const arr = items.slice();
+  if (state.sort === "near" && state.userLoc){
+    arr.forEach(i => { i.distance = haversine(state.userLoc.lat, state.userLoc.lng, i.lat, i.lon); });
+    arr.sort((a, b) => a.distance - b.distance);
+  } else if (state.sort === "az"){
+    arr.sort((a, b) => a.name.localeCompare(b.name));
+  } else {
+    arr.sort((a, b) => {
+      const ap = (a.phones || []).length > 0, bp = (b.phones || []).length > 0;
+      if (ap !== bp) return ap ? -1 : 1;
+      const ae = (a.emails || []).length > 0, be = (b.emails || []).length > 0;
+      if (ae !== be) return ae ? -1 : 1;
+      return a.name.localeCompare(b.name);
+    });
+  }
+  return arr;
+}
+function filterItems(items){
+  const q = state.q.trim().toLowerCase();
+  return items.filter(i => {
+    if (state.phoneOnly && !(i.phones && i.phones.length)) return false;
+    if (!q) return true;
+    const hay = (i.name + " " + (i.address || "") + " " + (i.operator || "") + " " + (i.type || "") + " " +
+                 (i.phones || []).join(" ")).toLowerCase();
+    return q.split(/\s+/).every(tok => hay.indexOf(tok) !== -1);
+  });
+}
+function mapsQuery(rec){
+  return `https://www.google.com/maps/search/?api=1&query=${rec.lat},${rec.lon}`;
+}
+
+function hospitalCardHTML(r){
+  const chips = [];
+  if (r.type) chips.push(`<span class="chip">${esc(r.type)}</span>`);
+  if (r.emergency) chips.push(`<span class="chip hot">24×7 emergency</span>`);
+  if (r.phones && r.phones.length) chips.push(`<span class="chip ok">Callable</span>`);
+  if (r.distance != null) chips.push(`<span class="chip info">${fmtDist(r.distance)} away</span>`);
+
+  const meta = [];
+  if (r.address) meta.push(`<div class="mrow">${PIN_SVG}<span>${esc(r.address)}</span></div>`);
+  if (r.operator && r.operator !== r.name) meta.push(`<div class="mrow">${PIN_SVG}<span>${esc(r.operator)}</span></div>`);
+  if (r.phones && r.phones.length)
+    meta.push(`<div class="mrow">${PHONE_SVG}<span>${r.phones.map(p => `<a href="tel:${esc(p)}">${esc(prettyE164(p))}</a>`).join(" · ")}</span></div>`);
+  if (r.emails && r.emails.length)
+    meta.push(`<div class="mrow">${MAIL_SVG}<span>${r.emails.map(m => `<a href="mailto:${esc(m)}">${esc(m)}</a>`).join(" · ")}</span></div>`);
+  if (r.website)
+    meta.push(`<div class="mrow">${PIN_SVG}<span><a href="${esc(r.website)}" target="_blank" rel="noopener noreferrer">${esc(r.website.replace(/^https?:\/\//,"").replace(/\/$/,""))}</a></span></div>`);
+
+  const actions = [];
+  if (r.phones && r.phones.length)
+    actions.push(`<a class="btn btn-call" href="tel:${esc(r.phones[0])}">${PHONE_SVG}Call</a>`);
+  else
+    actions.push(`<a class="btn btn-call" href="tel:102" title="No direct number listed — dials the national ambulance service">${PHONE_SVG}Call 102</a>`);
+  if (r.emails && r.emails.length)
+    actions.push(`<a class="btn btn-mail" href="mailto:${esc(r.emails[0])}">${MAIL_SVG}Email</a>`);
+  actions.push(`<a class="btn btn-map" href="${mapsQuery(r)}" target="_blank" rel="noopener noreferrer">${PIN_SVG}Map</a>`);
+
+  return `<article class="card" style="--accent:linear-gradient(135deg,#ff3b5c,#ff7a18)">
+    <div class="card-top">
+      <div class="card-ico" style="background:linear-gradient(135deg,#ff3b5c,#ff7a18)">${HOSP_SVG}</div>
+      <div style="min-width:0">
+        <h4 class="card-name">${esc(r.name)}</h4>
+        <p class="card-sub">${esc(r.address || "Kolkata")}</p>
+      </div>
+    </div>
+    ${chips.length ? `<div class="chips">${chips.join("")}</div>` : ""}
+    ${meta.length ? `<div class="card-meta">${meta.join("")}</div>` : ""}
+    <div class="card-actions">${actions.join("")}</div>
+  </article>`;
+}
+
+function policeCardHTML(r){
+  const chips = [];
+  if (r.type) chips.push(`<span class="chip">${esc(r.type)}</span>`);
+  if (r.distance != null) chips.push(`<span class="chip info">${fmtDist(r.distance)} away</span>`);
+
+  return `<article class="card" style="--accent:linear-gradient(135deg,#2563eb,#22d3ee)">
+    <div class="card-top">
+      <div class="card-ico" style="background:linear-gradient(135deg,#2563eb,#22d3ee)">${POLICE_SVG}</div>
+      <div style="min-width:0">
+        <h4 class="card-name">${esc(r.name)}</h4>
+        <p class="card-sub">${esc(r.address || "Kolkata")}</p>
+      </div>
+    </div>
+    ${chips.length ? `<div class="chips">${chips.join("")}</div>` : ""}
+    <div class="card-actions">
+      <a class="btn btn-map" style="flex:1 1 auto;background:linear-gradient(135deg,#2563eb,#22d3ee);color:#fff;border-color:transparent"
+         href="${mapsQuery(r)}" target="_blank" rel="noopener noreferrer">${PIN_SVG}Open in Google Maps</a>
+    </div>
+  </article>`;
+}
+
+function sectionHTML(cfg){
+  const all = state[cfg.key] || [];
+  const filtered = sortItems(filterItems(all), cfg.key);
+  const shown = state.shown[cfg.key] || PAGE_SIZE;
+  const visible = filtered.slice(0, shown);
+  const gridClass = cfg.key === "police" ? "grid police" : "grid";
+
+  let body;
+  if (!state.loaded){
+    body = `<div class="${gridClass}">${'<div class="sk"></div>'.repeat(3)}</div>`;
+  } else if (!visible.length){
+    body = `<div class="empty">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"/></svg>
+      <h4>${filtered.length === 0 && all.length > 0 ? "Nothing matches that search" : "No records loaded"}</h4>
+      <p>${filtered.length === 0 && all.length > 0
+        ? "Try a different spelling, or clear the search box."
+        : "The bundled dataset could not be read. Use “Reload data”, and if it still fails check your internet connection."}</p>
+    </div>`;
+  } else {
+    body = `<div class="${gridClass}">${visible.map(cfg.card).join("")}</div>` +
+      (filtered.length > visible.length
+        ? `<div style="text-align:center;margin-top:16px">
+             <button class="btn-ghost" type="button" data-more="${cfg.key}">
+               Show ${Math.min(PAGE_SIZE, filtered.length - visible.length)} more of ${filtered.length}
+             </button>
+           </div>` : "");
+  }
+
+  return `<div class="cat">
+    <div class="cat-head">
+      <div class="cat-ico ${cfg.icon}">${cfg.svg}</div>
+      <div><h3>${esc(cfg.title)}</h3><p>${esc(cfg.desc)}</p></div>
+      <span class="cat-count">${state.loaded ? filtered.length + " result" + (filtered.length === 1 ? "" : "s") : "loading…"}</span>
+    </div>
+    ${body}
+    ${cfg.extra || ""}
+  </div>`;
+}
+
+function renderDirectory(){
+  const hostH = $("#body-hospitals");
+  const hostP = $("#body-police");
+  if (hostH) hostH.innerHTML = sectionHTML({
+    key:"hospitals", icon:"ico-hosp", title:"Hospitals & Nursing Homes",
+    desc:"Government, private and charitable hospitals across Kolkata — tap Map for directions",
+    svg:HOSP_SVG, card:hospitalCardHTML,
+    extra:`<div class="hgrid" style="margin-top:14px">${helplineCardHTML(findHelpline("102"), "linear-gradient(135deg,#22c55e,#22d3ee)", 2)}</div>`
+  });
+  if (hostP) hostP.innerHTML = sectionHTML({
+    key:"police", icon:"ico-pol", title:"Police Stations & Headquarters",
+    desc:"Every police station mapped inside Kolkata — tap a card to open it in Google Maps",
+    svg:POLICE_SVG, card:policeCardHTML,
+    extra:`<div class="hgrid" style="margin-top:14px">${helplineCardHTML(findHelpline("100"), "linear-gradient(135deg,#2563eb,#22d3ee)", 5)}</div>`
+  });
+}
+
+/** OSM occasionally stores names in all-lowercase. Tidy them for display. */
+function tidyName(n){
+  let s = String(n || "").trim();
+  if (!s) return s;
+  if (!/[A-Z]/.test(s)) s = s.replace(/(^|\s)([a-z])/g, (m, a, b) => a + b.toUpperCase());
+  s = s.replace(/\s+police station$/i, " Police Station");
+  return s;
+}
+
+function updateCounters(){
+  const badgeH = $('.cnt[data-cnt="hospitals"]');
+  if (badgeH) badgeH.textContent = state.loaded ? state.hospitals.length : "…";
+  const badgeP = $('.cnt[data-cnt="police"]');
+  if (badgeP) badgeP.textContent = state.loaded ? state.police.length : "…";
+  const fp = $("#factPlaces");
+  if (fp) fp.textContent = state.loaded
+    ? (state.hospitals.length + state.police.length).toLocaleString("en-IN") : "—";
+}
+
+function render(){
+  updateCounters();
+  if (state.activeCat === "helplines") renderHelplinePanel();
+  else if (state.activeCat === "safety") renderSafetyHelplines();
+  else renderDirectory();
+}
+
+/* ------------------------------------------------------------------
+   9. DATA LOADING (bundled JSON file, not Overpass)
+   ------------------------------------------------------------------ */
+function setStatus(kind, text){
+  const pill = $("#statusPill");
+  if (!pill) return;
+  pill.className = "pill " + kind;
+  $("#statusTxt").textContent = text;
+}
+function showError(title, body){
+  $("#errTitle").textContent = title;
+  $("#errBody").innerHTML = body;
+  $("#errBanner").classList.add("show");
+}
+function hideError(){ $("#errBanner").classList.remove("show"); }
+function stampTime(ts){
+  return new Date(ts).toLocaleString("en-IN", { day:"2-digit", month:"short", hour:"2-digit", minute:"2-digit" });
+}
+
+function applyData(json){
+  state.hospitals = (Array.isArray(json.hospitals) ? json.hospitals : [])
+    .map(r => { r.name = tidyName(r.name); return r; })
+    .filter(r => r.name);
+  state.police = (Array.isArray(json.police) ? json.police : [])
+    .map(r => { r.name = tidyName(r.name); return r; })
+    .filter(r => r.name);
+  state.meta      = json.meta || null;
+  state.loaded    = true;
+  state.shown.hospitals = PAGE_SIZE;
+  state.shown.police = PAGE_SIZE;
+}
+
+async function loadData(force){
+  hideError();
+  setStatus("load", "Loading…");
+  $("#lastUpdated").textContent = "Reading " + DATA_FILE + "…";
+
+  try {
+    const res = await fetch(DATA_FILE + (force ? "?v=" + Date.now() : ""), { cache: force ? "reload" : "default" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const json = await res.json();
+    applyData(json);
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(json)); } catch(_){}
+    finishLoad(false);
+    return;
+  } catch (err){
+    /* Offline / file missing — fall back to the last copy we saved. */
+    let cached = null;
+    try { const raw = localStorage.getItem(CACHE_KEY); cached = raw ? JSON.parse(raw) : null; } catch(_){}
+    if (cached && (cached.hospitals || cached.police)){
+      applyData(cached);
+      finishLoad(true);
+      return;
+    }
+    state.loaded = false;
+    setStatus("err", "Data unavailable");
+    $("#lastUpdated").textContent = "Could not read " + DATA_FILE;
+    showError("Couldn't load the directory data",
+      "The page could not read <code>" + esc(DATA_FILE) + "</code> (" + esc(err.message) + ").<br><br>" +
+      "<b>If you are running this from a folder on your computer:</b> browsers block <code>file://</code> reads of local JSON. " +
+      "Serve the folder instead — for example <code>python -m http.server</code> — or just open the copy hosted on GitHub Pages.<br><br>" +
+      "<b>If you are online:</b> check your connection and tap <b>Reload data</b>.<br><br>" +
+      "Either way, every helpline on this page works right now — those numbers are built into the page and need no internet.");
+    render();
+  }
+}
+
+function finishLoad(fromCache){
+  const n = state.hospitals.length + state.police.length;
+  setStatus("ok", n.toLocaleString("en-IN") + " places");
+  const gen = state.meta && state.meta.generated ? new Date(state.meta.generated) : null;
+  $("#lastUpdated").textContent =
+    (fromCache ? "Offline copy" : "Bundled dataset") +
+    (gen ? " · generated " + stampTime(gen) : "") +
+    " · " + state.hospitals.length + " hospitals, " + state.police.length + " police stations" +
+    (state.meta && state.meta.bboxLabel ? " · area " + state.meta.bboxLabel : "");
+  render();
+}
+
+/* ------------------------------------------------------------------
+   10. SEARCH / SORT / FILTER / TABS
+   ------------------------------------------------------------------ */
+$("#search").addEventListener("input", debounce(function(){
+  state.q = this.value;
+  $("#searchWrap").classList.toggle("has-val", !!this.value);
+  state.shown.hospitals = PAGE_SIZE;
+  state.shown.police = PAGE_SIZE;
+  render();
+}, 180));
+$("#searchClr").addEventListener("click", () => {
+  const inp = $("#search");
+  inp.value = ""; state.q = "";
+  $("#searchWrap").classList.remove("has-val");
+  render(); inp.focus();
+});
+$("#sortSel").addEventListener("change", function(){
+  state.sort = this.value;
+  if (state.sort === "near" && !state.userLoc) toast("Tap “Use my location” so distances can be calculated.", "info");
+  render();
+});
+$("#filterPhone").addEventListener("click", function(){
+  state.phoneOnly = !state.phoneOnly;
+  this.setAttribute("aria-pressed", String(state.phoneOnly));
+  state.shown.hospitals = PAGE_SIZE;
+  state.shown.police = PAGE_SIZE;
+  render();
+});
+$("#reloadBtn").addEventListener("click", () => {
+  loadData(true).then(() => toast("Directory reloaded."));
+});
+
+function activateTab(catId){
+  state.activeCat = catId;
+  $$(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.cat === catId)));
+  $$(".panel").forEach(p => p.classList.toggle("active", p.id === "panel-" + catId));
+  const toolbar = $("#toolbar");
+  if (toolbar) toolbar.style.display = (catId === "hospitals" || catId === "police") ? "" : "none";
+  render();
+  const bar = $(".tabbar-outer");
+  if (bar) window.scrollTo({ top: Math.max(0, bar.offsetTop - 8), behavior: "smooth" });
+}
+$$(".tab").forEach(t => {
+  t.addEventListener("click", () => activateTab(t.dataset.cat));
+  t.addEventListener("keydown", (e) => {
+    const tabs = $$(".tab");
+    const i = tabs.indexOf(t);
+    if (e.key === "ArrowRight"){ e.preventDefault(); tabs[(i+1) % tabs.length].focus(); }
+    if (e.key === "ArrowLeft"){ e.preventDefault(); tabs[(i-1+tabs.length) % tabs.length].focus(); }
+  });
+});
+$("#heroSos").addEventListener("click", () => activateTab("safety"));
+
+/* Delegated: show-more + copy */
+document.addEventListener("click", (e) => {
+  const more = e.target.closest("[data-more]");
+  if (more){
+    const k = more.dataset.more;
+    state.shown[k] = (state.shown[k] || PAGE_SIZE) + PAGE_SIZE;
+    render();
+    return;
+  }
+  const copy = e.target.closest("[data-copy]");
+  if (copy) copyText(copy.dataset.copy);
+});
+
+/* ------------------------------------------------------------------
+   11. GEOLOCATION
+   ------------------------------------------------------------------ */
+function getPosition(){
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) return reject(new Error("Geolocation is not supported by this browser."));
+    navigator.geolocation.getCurrentPosition(
+      (pos) => resolve(pos),
+      (err) => {
+        const msgs = {
+          1: "Location permission was denied. Allow location access for this site in your browser settings, then try again.",
+          2: "Your position is unavailable right now (weak GPS / no signal). Try again near a window or outdoors.",
+          3: "Getting your location timed out. Try again."
+        };
+        reject(new Error(msgs[err.code] || err.message || "Location error."));
+      },
+      { enableHighAccuracy:true, timeout:15000, maximumAge:60000 }
+    );
+  });
+}
+function mapsLink(lat, lng){ return "https://www.google.com/maps?q=" + lat + "," + lng; }
+
+function nearestOf(list){
+  let best = null;
+  (list || []).forEach(r => {
+    const d = haversine(state.userLoc.lat, state.userLoc.lng, r.lat, r.lon);
+    if (!best || d < best.d) best = { rec:r, d };
+  });
+  return best;
+}
+function updateGeoPanel(){
+  if (!state.userLoc) return;
+  const { lat, lng, acc } = state.userLoc;
+  $("#geoStatus").innerHTML = `<a href="${mapsLink(lat, lng)}" target="_blank" rel="noopener noreferrer">${lat.toFixed(5)}, ${lng.toFixed(5)}</a> — open in Google Maps`;
+  $("#geoAcc").textContent = acc != null ? "±" + Math.round(acc) + " metres" : "not reported";
+
+  const bits = [];
+  const h = nearestOf(state.hospitals), p = nearestOf(state.police);
+  if (h) bits.push(`hospital <b>${esc(h.rec.name)}</b> (${fmtDist(h.d)})`);
+  if (p) bits.push(`police station <b>${esc(p.rec.name)}</b> (${fmtDist(p.d)})`);
+  $("#geoNearest").innerHTML = bits.length
+    ? "Closest to you: " + bits.join(" · ")
+    : "The directory has not loaded yet, so nearest services can't be worked out.";
+}
+async function locate(opts){
+  const o = opts || {};
+  const btn = o.btn;
+  if (btn) btn.classList.add("on");
+  try {
+    const pos = await getPosition();
+    state.userLoc = { lat: pos.coords.latitude, lng: pos.coords.longitude, acc: pos.coords.accuracy };
+    updateGeoPanel();
+    if (state.sort !== "near" && o.forceSort){ state.sort = "near"; $("#sortSel").value = "near"; }
+    render();
+    if (!o.quiet) toast("Location captured. Distances are now shown on each card.");
+    return state.userLoc;
+  } catch (err){
+    if (!o.quiet) toast(err.message, "bad");
+    if (o.needLocation) throw err;
+    return null;
+  } finally {
+    if (btn) btn.classList.remove("on");
+  }
+}
+$("#locBtn").addEventListener("click", function(){ locate({ btn:this, forceSort:true }); });
+$("#geoTool").addEventListener("click", function(){ locate({ btn:this, forceSort:true }); });
+
+/* ------------------------------------------------------------------
+   12. WOMEN'S SAFETY
+   ------------------------------------------------------------------ */
+const MSG_KEY = "ksos_msg_v2";
+function readMsg(){ try { return localStorage.getItem(MSG_KEY) || DEFAULT_MSG; } catch(_){ return DEFAULT_MSG; } }
+function writeMsg(v){ try { localStorage.setItem(MSG_KEY, v); } catch(_){} }
+
+function renderSafetyHelplines(){
+  const host = $("#safeHelplines");
+  if (!host) return;
+  host.innerHTML = SAFETY_HELPLINES.map((h, i) =>
+    helplineCardHTML(h, "linear-gradient(135deg,#ff5c9e,#8b5cf6)", i)).join("");
+  const c = $("#safeCount");
+  if (c) c.textContent = SAFETY_HELPLINES.length + " helplines";
+  const badge = $('.cnt[data-cnt="safety"]');
+  if (badge) badge.textContent = SAFETY_HELPLINES.length;
+}
+
+function buildMessage(manual){
+  const loc = state.userLoc
+    ? mapsLink(state.userLoc.lat, state.userLoc.lng)
+    : (manual || "[location unavailable — please call me]");
+  const now = new Date().toLocaleString("en-IN", { day:"2-digit", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" });
+  return readMsg()
+    .replace(/\{location\}/g, loc)
+    .replace(/\{time\}/g, now);
+}
+
+/* ---------- modal ---------- */
+function openModal(title, sub, msg, actions, note){
+  $("#modalTitle").textContent = title;
+  $("#modalSub").textContent = sub || "";
+  $("#modalMsg").textContent = msg || "";
+  $("#modalNote").innerHTML = note || "";
+  $("#modalActions").innerHTML = actions.map(a =>
+    `<a class="btn ${a.cls}" href="${esc(a.href)}" ${a.target ? 'target="_blank" rel="noopener noreferrer"' : ""} ${a.data ? "data-" + a.data : ""}>${a.icon || ""}${esc(a.label)}</a>`
+  ).join("");
+  $("#modal").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeModal(){
+  $("#modal").classList.remove("open");
+  document.body.style.overflow = "";
+}
+document.addEventListener("click", (e) => { if (e.target.closest("[data-close]")) closeModal(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape"){ closeModal(); stopSiren(); } });
+
+async function runSOS(){
+  const btn = $("#sosBig");
+  const original = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span><span class="t1">GPS…</span><span class="t2">GETTING YOUR LOCATION</span></span>';
+
+  let err = null;
+  if (!state.userLoc){
+    try { await locate({ quiet:true }); } catch (e){ err = e; }
+  }
+  btn.disabled = false;
+  btn.innerHTML = original;
+  if (err) toast(err.message, "bad");
+
+  const msg = buildMessage(null);
+  const actions = [
+    { cls:"btn-call", label:"Call 112 (ERSS)",  icon:PHONE_SVG, href:"tel:112" },
+    { cls:"btn-call", label:"Call 1091 (Women Helpline)", icon:PHONE_SVG, href:"tel:1091" },
+    { cls:"btn-soft", label:"Copy SOS message", icon:COPY_SVG, href:"#", copy:true },
+    { cls:"btn-soft", label:"Scroll to send options", icon:WA_SVG, href:"#", scroll:true }
+  ];
+  openModal(
+    state.userLoc ? "SOS ready — your location is attached" : "SOS ready — location missing",
+    state.userLoc
+      ? "The message below already contains a Google Maps link to where you are."
+      : "Your location could not be read, so the message has a placeholder. Use the boxes below the SOS button to send it anyway.",
+    msg, actions,
+    "Nothing is transmitted until you tap a button. Scroll down for WhatsApp, SMS and email — you can send to any number, and nothing is saved on this site."
+  );
+
+  $$("#modalActions .btn").forEach((a, i) => {
+    if (actions[i] && actions[i].copy) a.addEventListener("click", (ev) => { ev.preventDefault(); copyText(msg); });
+    if (actions[i] && actions[i].scroll) a.addEventListener("click", (ev) => {
+      ev.preventDefault(); closeModal();
+      const t = $("#waNum"); if (t){ t.scrollIntoView({ block:"center", behavior:"smooth" }); setTimeout(() => t.focus(), 500); }
+    });
+  });
+}
+$("#sosBig").addEventListener("click", runSOS);
+
+/* ---------- send to any number / address ---------- */
+function requireLocationThen(fn){
+  return async () => {
+    if (!state.userLoc){ try { await locate({ quiet:true }); } catch(_){} }
+    fn();
+  };
+}
+$("#waSend").addEventListener("click", requireLocationThen(() => {
+  const raw = $("#waNum").value.trim();
+  if (!raw) { $("#waNum").focus(); return toast("Type a phone number first.", "bad"); }
+  const mob = mobileNumber(raw);
+  if (!mob) return toast("That doesn't look like a 10-digit Indian mobile number.", "bad");
+  window.open(`https://wa.me/${mob}?text=${encodeURIComponent(buildMessage(null))}`, "_blank");
+}));
+$("#smsSend").addEventListener("click", requireLocationThen(() => {
+  const raw = $("#waNum").value.trim();
+  const tel = raw ? telHref(raw) : "";
+  window.location.href = "sms:" + tel + "?body=" + encodeURIComponent(buildMessage(null));
+}));
+$("#mailSend").addEventListener("click", requireLocationThen(() => {
+  const to = $("#mailTo").value.trim();
+  if (!to) { $("#mailTo").focus(); return toast("Type an email address first.", "bad"); }
+  window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent("SOS — I need help")}&body=${encodeURIComponent(buildMessage(null))}`;
+}));
+$("#copySos").addEventListener("click", () => copyText(buildMessage(null)));
+$("#shareSos").addEventListener("click", requireLocationThen(async () => {
+  const msg = buildMessage(null);
+  if (navigator.share){
+    try { await navigator.share({ title:"SOS — I need help", text: msg }); }
+    catch(_){ /* user dismissed */ }
+  } else {
+    copyText(msg);
+    toast("Sharing isn't available in this browser — the message was copied instead.", "info");
+  }
+}));
+
+/* ---------- message template ---------- */
+$("#msgTemplate").value = readMsg();
+$("#msgSave").addEventListener("click", () => {
+  const v = $("#msgTemplate").value.trim();
+  if (!v) return toast("The message can't be empty.", "bad");
+  writeMsg(v);
+  toast("SOS message saved in this browser.");
+});
+$("#msgReset").addEventListener("click", () => {
+  $("#msgTemplate").value = DEFAULT_MSG;
+  writeMsg(DEFAULT_MSG);
+  toast("Reset to the default message.");
+});
+
+/* ------------------------------------------------------------------
+   13. SIREN + FAKE CALL
+   ------------------------------------------------------------------ */
+let audioCtx = null, sirenNodes = null;
+function ctx(){
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === "suspended") audioCtx.resume();
+  return audioCtx;
+}
+function startSiren(){
+  const ac = ctx();
+  const osc = ac.createOscillator(), gain = ac.createGain(), lfo = ac.createOscillator(), lfoGain = ac.createGain();
+  osc.type = "sawtooth"; osc.frequency.value = 700;
+  lfo.type = "sine"; lfo.frequency.value = 0.7; lfoGain.gain.value = 420;
+  lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+  gain.gain.value = 0.0001;
+  osc.connect(gain); gain.connect(ac.destination);
+  osc.start(); lfo.start();
+  gain.gain.exponentialRampToValueAtTime(0.22, ac.currentTime + 0.35);
+  sirenNodes = { osc, lfo, gain };
+}
+function stopSiren(){
+  const t = $("#sirenTool");
+  if (t){ t.classList.remove("on"); t.setAttribute("aria-pressed","false"); }
+  if (!sirenNodes) return;
+  const nodes = sirenNodes;
+  sirenNodes = null;
+  try {
+    const ac = ctx();
+    nodes.gain.gain.cancelScheduledValues(ac.currentTime);
+    nodes.gain.gain.setValueAtTime(nodes.gain.gain.value, ac.currentTime);
+    nodes.gain.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + 0.25);
+    setTimeout(() => { try { nodes.osc.stop(); nodes.lfo.stop(); } catch(_){} }, 320);
+  } catch(_){}
+}
+$("#sirenTool").addEventListener("click", function(){
+  if (sirenNodes){ stopSiren(); toast("Siren stopped.", "info"); return; }
+  try {
+    startSiren();
+    this.classList.add("on");
+    this.setAttribute("aria-pressed","true");
+    toast("Siren on — it keeps sounding until you tap again.", "info");
+  } catch(_){ toast("Your browser blocked audio playback.", "bad"); }
+});
+
+$("#fakeCallTool").addEventListener("click", () => {
+  if ($("#fakeCall")) return;
+  const overlay = document.createElement("div");
+  overlay.id = "fakeCall";
+  overlay.setAttribute("style",
+    "position:fixed;inset:0;z-index:400;display:grid;place-items:center;background:linear-gradient(165deg,#05070f,#12172e);color:#fff;text-align:center;padding:26px");
+  overlay.innerHTML = `
+    <div>
+      <div style="font-size:.78rem;letter-spacing:.22em;opacity:.6;font-weight:700">INCOMING CALL</div>
+      <div style="width:96px;height:96px;border-radius:50%;margin:26px auto 18px;background:linear-gradient(135deg,#22c55e,#22d3ee);display:grid;place-items:center;font-size:2.1rem;font-weight:800">A</div>
+      <div style="font-size:1.6rem;font-weight:800;letter-spacing:-.02em" id="fcName">Amit</div>
+      <div style="opacity:.6;margin-top:6px;font-size:.86rem" id="fcTimer">00:00</div>
+      <div style="display:flex;gap:44px;justify-content:center;margin-top:52px">
+        <button id="fcEnd" style="width:68px;height:68px;border-radius:50%;border:none;background:#ef4444;cursor:pointer;font-size:1.5rem;color:#fff">✕</button>
+        <button id="fcAns" style="width:68px;height:68px;border-radius:50%;border:none;background:#22c55e;cursor:pointer;font-size:1.5rem;color:#fff">✓</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  document.body.style.overflow = "hidden";
+
+  let ring = null;
+  try {
+    const ac = ctx();
+    const g = ac.createGain(); g.gain.value = 0.0001; g.connect(ac.destination);
+    const o = ac.createOscillator(); o.type = "sine"; o.frequency.value = 480; o.connect(g); o.start();
+    const beep = () => {
+      const t = ac.currentTime;
+      g.gain.cancelScheduledValues(t);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.16, t + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
+    };
+    beep();
+    ring = setInterval(beep, 1800);
+    overlay._osc = o; overlay._gain = g;
+  } catch(_){}
+
+  let secs = 0;
+  const timer = setInterval(() => {
+    secs++;
+    const el = $("#fcTimer");
+    if (el) el.textContent = String(Math.floor(secs/60)).padStart(2,"0") + ":" + String(secs%60).padStart(2,"0");
+  }, 1000);
+
+  const kill = () => {
+    clearInterval(ring); clearInterval(timer);
+    try { if (overlay._gain) overlay._gain.disconnect(); if (overlay._osc) overlay._osc.stop(); } catch(_){}
+    overlay.remove();
+    document.body.style.overflow = "";
+  };
+  $("#fcEnd").addEventListener("click", kill);
+  $("#fcAns").addEventListener("click", () => {
+    clearInterval(ring);
+    const n = $("#fcName"); if (n) n.textContent = "Amit · connected";
+    toast("You're “on a call” — keep the phone to your ear.", "info");
+  });
+});
+
+/* ------------------------------------------------------------------
+   14. MISC UI
+   ------------------------------------------------------------------ */
+const toTop = $("#toTop");
+window.addEventListener("scroll", () => {
+  toTop.classList.toggle("show", window.scrollY > 620);
+}, { passive:true });
+toTop.addEventListener("click", () => window.scrollTo({ top:0, behavior:"smooth" }));
+
+$("#upiBtn").href = "upi://pay?pa=8017414711%40yespop&pn=Rounak%20Adhikary&cu=INR&tn=Kolkata%20SOS%20project";
+
+window.addEventListener("offline", () => {
+  setStatus("err", "Offline");
+  toast("You are offline. The helplines keep working; the map links need internet.", "info");
+});
+window.addEventListener("online", () => {
+  if (!state.loaded) loadData(true);
+});
+
+/* ------------------------------------------------------------------
+   15. BOOT
+   ------------------------------------------------------------------ */
+(function boot(){
+  renderStrip();
+  renderHelplinePanel();
+  renderSafetyHelplines();
+  renderDirectory();
+  const toolbar = $("#toolbar");
+  if (toolbar) toolbar.style.display = "none";
+  loadData(false);
+})();
+</script>
+</body>
+</html>
