@@ -2442,6 +2442,18 @@ $("#sirenTool").addEventListener("click", function(){
   } catch(_){ toast("Your browser blocked audio playback.", "bad"); }
 });
 
+/** tanh soft-clip curve. Inputs at or beyond ±1 map to exactly ±1, so a
+    WaveShaper using this can never output more than full scale. */
+function softClipCurve(k, n){
+  const curve = new Float32Array(n);
+  const norm = Math.tanh(k);
+  for (let i = 0; i < n; i++){
+    const x = (i / (n - 1)) * 2 - 1;
+    curve[i] = Math.tanh(k * x) / norm;
+  }
+  return curve;
+}
+
 $("#fakeCallTool").addEventListener("click", () => {
   if ($("#fakeCall")) return;
   const overlay = document.createElement("div");
@@ -2464,33 +2476,43 @@ $("#fakeCallTool").addEventListener("click", () => {
 
   /* A real telephone ring: 440 Hz + 480 Hz sounded together and amplitude-
      modulated at 20 Hz for the bell-like trill, in a 2 s on / 2 s off
-     cadence, run through a limiter so it is loud without clipping. */
+     cadence. The signal is driven hard into a brickwall limiter, which holds
+     the peaks at full scale — that is what actually makes it loud. */
   let ringTimer = null, ringNodes = null;
   try {
     const ac = ctx();
 
-    const comp = ac.createDynamicsCompressor();
-    comp.threshold.value = -8;
-    comp.knee.value = 6;
-    comp.ratio.value = 12;
-    comp.attack.value = 0.003;
-    comp.release.value = 0.25;
-    comp.connect(ac.destination);
+    /* Soft-clip saturation gives a true ceiling: anything at or beyond ±1
+       comes out at exactly ±1, so the output can never exceed full scale.
+       That lets us drive the ring hard — maximum loudness with no hard
+       digital clipping, just the gentle squash a limiter does. */
+    const shaper = ac.createWaveShaper();
+    shaper.curve = softClipCurve(2.2, 4096);
+    shaper.oversample = "4x";
 
     const master = ac.createGain();      // carries the on/off cadence
     master.gain.value = 0.0001;
-    master.connect(comp);
+    shaper.connect(master);
+    master.connect(ac.destination);
+
+    const drive = ac.createGain();       // pushes the ring into saturation
+    drive.gain.value = 1.6;
+    drive.connect(shaper);
 
     const trill = ac.createGain();       // 20 Hz tremolo, the "brrring"
-    trill.gain.value = 0.6;
-    trill.connect(master);
+    trill.gain.value = 1;
+    trill.connect(drive);
+
+    const mix = ac.createGain();         // keeps the two tones at unity peak
+    mix.gain.value = 0.5;
+    mix.connect(trill);
 
     const oscs = [];
     [440, 480].forEach(f => {
       const o = ac.createOscillator();
       o.type = "sine";
       o.frequency.value = f;
-      o.connect(trill);
+      o.connect(mix);
       o.start();
       oscs.push(o);
     });
@@ -2498,18 +2520,25 @@ $("#fakeCallTool").addEventListener("click", () => {
     const am = ac.createOscillator(), amDepth = ac.createGain();
     am.type = "sine";
     am.frequency.value = 20;
-    amDepth.gain.value = 0.4;
+    amDepth.gain.value = 0.45;
     am.connect(amDepth);
     amDepth.connect(trill.gain);
     am.start();
 
+    /* The shaper already sits at the ceiling, so the cadence gate opens to 1. */
+    const RING_LEVEL = 1;
     const ringOnce = () => {
       const t = ac.currentTime;
       master.gain.cancelScheduledValues(t);
       master.gain.setValueAtTime(0.0001, t);
-      master.gain.exponentialRampToValueAtTime(0.95, t + 0.03);
-      master.gain.setValueAtTime(0.95, t + 1.85);
+      master.gain.exponentialRampToValueAtTime(RING_LEVEL, t + 0.03);
+      master.gain.setValueAtTime(RING_LEVEL, t + 1.85);
       master.gain.exponentialRampToValueAtTime(0.0001, t + 2);
+
+      /* Phones that support it buzz in the same 2 s on / 2 s off pattern. */
+      if (navigator.vibrate){
+        try { navigator.vibrate([400, 200, 400, 1000]); } catch(_){}
+      }
     };
     ringOnce();
     ringTimer = setInterval(ringOnce, 4000);   // 2 s ringing, 2 s quiet
@@ -2518,6 +2547,7 @@ $("#fakeCallTool").addEventListener("click", () => {
 
   const stopRing = () => {
     clearInterval(ringTimer); ringTimer = null;
+    if (navigator.vibrate){ try { navigator.vibrate(0); } catch(_){} }
     if (!ringNodes) return;
     const n = ringNodes; ringNodes = null;
     try {
