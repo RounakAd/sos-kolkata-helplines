@@ -37,8 +37,8 @@ const MIRRORS = [
 /* Overpass rejects requests that do not identify themselves. */
 const USER_AGENT = "KolkataSOS-Directory-Builder/1.0 (static emergency directory; OSM ODbL data)";
 
-/* Only hospitals and police stations are kept in the bundled dataset —
-   the other emergency services are covered by official helplines. */
+/* Only hospitals, police stations and pet care are kept in the bundled
+   dataset — the other emergency services are covered by official helplines. */
 const LAYERS = [
   {
     id: "hospitals",
@@ -51,6 +51,18 @@ const LAYERS = [
     id: "police",
     patterns: [
       'nwr["amenity"="police"]'
+    ]
+  },
+  {
+    id: "petcare",
+    patterns: [
+      'nwr["amenity"="veterinary"]',
+      'nwr["healthcare"="veterinary"]',
+      'nwr["amenity"="animal_shelter"]',
+      'nwr["amenity"="animal_boarding"]',
+      'nwr["amenity"="animal_hospital"]',
+      'nwr["shop"="pet_grooming"]',
+      'nwr["shop"="pet"]'
     ]
   }
 ];
@@ -135,6 +147,15 @@ function subtypeOf(tags, layer){
     if (/out\s*post|beat\b/i.test(tags.name || "")) return "Outpost";
     if (/quarter/i.test(tags.name || "")) return "Police quarters";
     return "Police station";
+  }
+  if (layer === "petcare"){
+    if (tags.amenity === "veterinary" || tags.healthcare === "veterinary" ||
+        tags.amenity === "animal_hospital" || /vet\b|veterinar|hospital|clinic/i.test(tags.name || "")) return "Veterinary clinic";
+    if (tags.amenity === "animal_shelter") return "Animal shelter";
+    if (tags.amenity === "animal_boarding") return "Boarding / kennel";
+    if (tags.shop === "pet_grooming") return "Pet grooming";
+    if (tags.shop === "pet") return "Pet shop";
+    return "Pet care";
   }
   return "";
 }

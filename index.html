@@ -371,6 +371,8 @@ select.sel:focus{outline:none;border-color:var(--red)}
 .ico-hosp{background:linear-gradient(135deg,#ff3b5c,#ff7a18)}
 .ico-pol{background:linear-gradient(135deg,#2563eb,#22d3ee)}
 .ico-cyb{background:linear-gradient(135deg,#8b5cf6,#22d3ee)}
+.ico-pet{background:linear-gradient(135deg,#14b8a6,#84cc16)}
+.ico-ngo{background:linear-gradient(135deg,#f97316,#ec4899)}
 .ico-hl{background:linear-gradient(135deg,#ff3b5c,#c81e3c)}
 .ico-rail{background:linear-gradient(135deg,#0ea5e9,#22d3ee)}
 .ico-dis{background:linear-gradient(135deg,#f59e0b,#ef4444)}
@@ -745,11 +747,11 @@ html[data-theme="light"] .geo-row .v a{color:#0e7490}
       <div class="hero-copy">
         <span class="tagline">⚡ Emergency · Kolkata</span>
         <h2>Every emergency number for <em>Kolkata</em>, in one place.</h2>
-        <p>Verified government helplines for police, fire, ambulance, cyber crime, railways, disaster, children and senior citizens — plus every hospital and police station in the city with a one-tap map link.</p>
+        <p>Verified government helplines for police, fire, ambulance, cyber crime, railways, metro, disaster, children, women and senior citizens — plus every hospital, police station and pet clinic in the city with a one-tap map link.</p>
         <div class="hero-facts">
           <span class="fact">📞 <b id="factHelplines">—</b> official helplines</span>
-          <span class="fact">🏥 <b id="factPlaces">—</b> hospitals &amp; police stations</span>
-          <span class="fact">✅ <b>Zero</b> placeholder data</span>
+          <span class="fact">🏥 <b id="factPlaces">—</b> places &amp; services</span>
+          <span class="fact">🤝 <b>Verified</b> NGO contacts</span>
         </div>
       </div>
       <button class="sos-orb" id="heroSos" type="button" aria-label="Open Women's Safety SOS panel">
@@ -785,6 +787,14 @@ html[data-theme="light"] .geo-row .v a{color:#0e7490}
       <button class="tab" role="tab" data-cat="police" aria-selected="false" id="tab-police" aria-controls="panel-police">
         <svg viewBox="0 0 24 24"><path d="M12 2 4 5.5v5.8c0 4.9 3.4 9.4 8 10.7 4.6-1.3 8-5.8 8-10.7V5.5L12 2Zm0 4.2 1.6 3.3 3.6.5-2.6 2.6.6 3.6-3.2-1.7-3.2 1.7.6-3.6L6.8 10l3.6-.5L12 6.2Z"/></svg>
         Police Stations <span class="cnt" data-cnt="police">0</span>
+      </button>
+      <button class="tab" role="tab" data-cat="petcare" aria-selected="false" id="tab-petcare" aria-controls="panel-petcare">
+        <svg viewBox="0 0 24 24"><path d="M4.5 8.5a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm11 0a2 2 0 1 1 4 0 2 2 0 0 1-4 0ZM2.5 13a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm15 0a2 2 0 1 1 4 0 2 2 0 0 1-4 0ZM12 11c2.5 0 5 2.6 5 5.2 0 2-1.6 3.3-3.4 3.3-.8 0-1.1-.3-1.6-.3s-.8.3-1.6.3C8.6 19.5 7 18.2 7 16.2 7 13.6 9.5 11 12 11Z"/></svg>
+        Pet Care <span class="cnt" data-cnt="petcare">0</span>
+      </button>
+      <button class="tab" role="tab" data-cat="ngos" aria-selected="false" id="tab-ngos" aria-controls="panel-ngos">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9.3-8.4A5.4 5.4 0 0 1 12 6.6a5.4 5.4 0 0 1 9.3 6C19 16.6 12 21 12 21Z"/></svg>
+        NGOs <span class="cnt" data-cnt="ngos">0</span>
       </button>
       <button class="tab tab-sos" role="tab" data-cat="safety" aria-selected="false" id="tab-safety" aria-controls="panel-safety">
         <svg viewBox="0 0 24 24"><path d="M12 2 4 5.5v5.8c0 4.9 3.4 9.4 8 10.7 4.6-1.3 8-5.8 8-10.7V5.5L12 2Zm0 5a2.6 2.6 0 0 1 2.6 2.6c0 1.4-.9 2.2-1.6 2.9-.5.5-.6.8-.6 1.5h-1.6c0-1.2.2-1.8.9-2.5.6-.6 1.1-1 1.1-1.9a1.2 1.2 0 0 0-2.4 0H9.4A2.6 2.6 0 0 1 12 7Zm-.8 8.6h1.6V18h-1.6v-2.4Z"/></svg>
@@ -839,6 +849,14 @@ html[data-theme="light"] .geo-row .v a{color:#0e7490}
 
   <section class="panel" id="panel-police" role="tabpanel" aria-labelledby="tab-police">
     <div id="body-police"></div>
+  </section>
+
+  <section class="panel" id="panel-petcare" role="tabpanel" aria-labelledby="tab-petcare">
+    <div id="body-petcare"></div>
+  </section>
+
+  <section class="panel" id="panel-ngos" role="tabpanel" aria-labelledby="tab-ngos">
+    <div id="body-ngos"></div>
   </section>
 
   <!-- ===================== WOMEN'S SAFETY ===================== -->
@@ -1107,6 +1125,32 @@ const HELPLINE_GROUPS = [
     ]
   },
   {
+    id:"missing", title:"Missing persons & children", icon:"ico-pol",
+    accent:"linear-gradient(135deg,#e11d48,#f97316)",
+    desc:"If someone is missing, report it to the police straight away — there is no waiting period",
+    items:[
+      { num:"112", label:"Emergency Response Support System", note:"Report a missing person immediately — police must register the case", src:"Ministry of Home Affairs", url:"https://www.mha.gov.in/en/commoncontent/emergency-response-support-system-erss" },
+      { num:"100", label:"Police", note:"Police control room — dial for a missing adult", src:"Govt. of West Bengal", url:"https://s24pgs.gov.in/helpline/" },
+      { num:"1098", label:"Child Helpline — missing children", note:"24×7 free helpline for any missing or lost child", src:"Ministry of Women & Child Development", url:"https://wcd.gov.in/child/child-helpline" },
+      { num:"1091", label:"Women Helpline — West Bengal", note:"Dial for a missing woman or girl", src:"Govt. of West Bengal", url:"https://s24pgs.gov.in/helpline/" },
+      { num:"181", label:"Women Helpline / Domestic Abuse", note:"National 24×7 helpline for women in distress", src:"Ministry of Women & Child Development", url:"https://www.wcd.gov.in/offerings/women--helpline--scheme" },
+      { portal:true, label:"Kolkata Police — Missing Person portal", note:"Search the official list of people reported missing in Kolkata, or file a report", src:"Kolkata Police", href:"https://kolkatapolice.gov.in/missing-person/" }
+    ]
+  },
+  {
+    id:"metro", title:"Kolkata Metro", icon:"ico-rail",
+    accent:"linear-gradient(135deg,#0284c7,#22d3ee)",
+    desc:"Metro Railway and Metro Rail Corporation helplines for Kolkata",
+    items:[
+      { num:"9007041908", label:"Metro Railway — Women Helpline", note:"Dedicated helpline for women travelling on the Kolkata Metro", src:"Metro Railway Kolkata", url:"https://mtp.indianrailways.gov.in/view_section.jsp?lang=0&id=0,2,464" },
+      { num:"9007041789", label:"Metro Railway — Security Helpline", note:"Railway Protection Force, Kolkata Metro", src:"Metro Railway Kolkata", url:"https://mtp.indianrailways.gov.in/view_section.jsp?lang=0&id=0,2,464" },
+      { num:"182", label:"Railway Security (RPF)", note:"Security on any Indian Railways service, including the Metro", src:"Indian Railways", url:"https://182rpf.indianrailways.gov.in/SecurityHelpLine/" },
+      { num:"139", label:"RailMadad — Integrated Railway Helpline", note:"Enquiry, assistance and grievances", src:"Indian Railways", url:"https://railmadad.indianrailways.gov.in/" },
+      { num:"033-2226-4817", label:"Metro Rail Corporation — commuter helpline", note:"Train information, smart-card issues and grievances", src:"Kolkata Metro Rail Corporation", url:"https://kmrc.in/contact_us.php" },
+      { num:"9007041844", label:"Metro Rail Corporation — alternate line", note:"Second commuter helpline number", src:"Kolkata Metro Rail Corporation", url:"https://kmrc.in/contact_us.php" }
+    ]
+  },
+  {
     id:"railway", title:"Railways", icon:"ico-rail",
     accent:"linear-gradient(135deg,#0ea5e9,#22d3ee)",
     desc:"Train emergencies, security on board, medical help and complaints",
@@ -1148,6 +1192,27 @@ const HELPLINE_GROUPS = [
     ]
   },
   {
+    id:"mind", title:"Mental health & de-addiction", icon:"ico-ngo",
+    accent:"linear-gradient(135deg,#8b5cf6,#ec4899)",
+    desc:"Distress, depression, suicide prevention, alcohol and drug addiction",
+    items:[
+      { num:"14416", label:"Tele-MANAS — Mental Health Helpline", note:"National 24×7 tele-mental-health support, free and confidential", src:"Ministry of Health & Family Welfare", url:"https://telemanas.mohfw.gov.in/" },
+      { num:"14446", label:"National De-addiction Helpline", note:"Counselling and referral for alcohol and drug use", src:"Ministry of Social Justice & Empowerment", url:"https://nmba.dosje.gov.in/index.php/toll-free" },
+      { num:"1800-11-0031", label:"Drug De-addiction Helpline (NISD)", note:"Toll-free counselling and treatment referral", src:"National Institute of Social Defence", url:"https://nisd.gov.in/helplines.html" },
+      { num:"1933", label:"MANAS — Narcotics Helpline", note:"Report drug trafficking or get help with substance use", src:"Ministry of Home Affairs", url:"https://www.india.gov.in/directory/helpline" }
+    ]
+  },
+  {
+    id:"inclusion", title:"Support & inclusion", icon:"ico-ngo",
+    accent:"linear-gradient(135deg,#6366f1,#22d3ee)",
+    desc:"Transgender persons, disability support and other welfare helplines",
+    items:[
+      { num:"14427", label:"Transgender Helpline", note:"Support and grievance line for transgender persons", src:"National Institute of Social Defence", url:"https://nisd.gov.in/helplines.html" },
+      { num:"14456", label:"Persons with Disabilities Helpline", note:"Support for persons with disabilities (Divyangjan)", src:"Dept. of Empowerment of Persons with Disabilities", url:"https://www.india.gov.in/directory/helpline" },
+      { num:"14567", label:"Elderline — Senior Citizens Helpline", note:"Abuse, neglect, pension and legal guidance", src:"Ministry of Social Justice & Empowerment", url:"https://www.dosje.gov.in/schemes-and-services/elderline/" }
+    ]
+  },
+  {
     id:"road", title:"Road, highway & vehicle", icon:"ico-road",
     accent:"linear-gradient(135deg,#64748b,#0ea5e9)",
     desc:"Breakdowns, towing, cranes and road accidents",
@@ -1185,6 +1250,171 @@ const SAFETY_HELPLINES = [
   { num:"1930",       label:"Cyber Crime — online abuse",    note:"Stalking, morphed images, online threats",          src:"Ministry of Home Affairs",              msg:"I am facing online harassment / stalking and I want to file a complaint. I am at: {location}\nPlease advise me and take action." }
 ];
 
+/* ------------------------------------------------------------------
+   NON-GOVERNMENT ORGANISATIONS
+   Real, publicly listed Kolkata organisations. Each entry records where
+   its details were published. These are community services, NOT
+   emergency responders — always dial 112 in an emergency.
+   ------------------------------------------------------------------ */
+const NGO_ORGS = [
+  {
+    name:"CINI — Child In Need Institute (Kolkata Unit)",
+    causes:["children","girls","women"],
+    about:"Child protection, health, nutrition, education and adolescent empowerment. Working in West Bengal since 1974.",
+    address:"63, Rafi Ahmed Kidwai Road, Kolkata 700016",
+    phones:["+919830255492"],
+    email:"cinikolkata@cinindia.org",
+    website:"https://cini-india.org/",
+    src:"cini-india.org"
+  },
+  {
+    name:"CINI Teenline",
+    causes:["children","girls"],
+    about:"Helpline and counselling for adolescents and teenagers in distress or at risk.",
+    address:"23/44 Gariahat Road (Golpark), Kankulia, near South City College, Kolkata 700029",
+    phones:["18001215323","+919830108925","+919830159393"],
+    email:"teenline@cinindia.org",
+    website:"https://cini-india.org/",
+    src:"cini-india.org"
+  },
+  {
+    name:"Sanlaap",
+    causes:["children","girls","women"],
+    about:"Anti-human-trafficking organisation. Runs shelters and rehabilitation for trafficked girls, women and children.",
+    address:"38B Mahanirban Road, Kolkata 700029",
+    phones:["+913324662977"],
+    email:"hq@sanlaapindia.org",
+    website:"https://sanlaap.org/",
+    src:"sanlaap.org"
+  },
+  {
+    name:"All Bengal Women's Union (ABWU)",
+    causes:["girls","women","children"],
+    about:"One of Kolkata's oldest women's organisations — shelter homes, a crèche, vocational training and a home for elderly women.",
+    address:"89, Elliot Road, Kolkata 700016",
+    phones:["+913322293292","+913322299152"],
+    website:"https://abwu.org.in/",
+    src:"abwu.org.in"
+  },
+  {
+    name:"Little Sisters of the Poor — St. Joseph's Home",
+    causes:["elderly"],
+    about:"Free residential care and medical attention for destitute elderly people. In Kolkata since 1882.",
+    address:"2, Acharya Jagadish Chandra Bose Road, Elgin, Kolkata 700020",
+    website:"https://www.littlesistersofthepoorindia.org/kolkata",
+    src:"littlesistersofthepoorindia.org",
+    note:"No public phone line — enquiries through the website contact form."
+  },
+  {
+    name:"HelpAge India",
+    causes:["elderly"],
+    about:"India's largest NGO for older people. Runs Elderline, a free 24×7 helpline for elder abuse, neglect, pensions and legal guidance.",
+    address:"Works across West Bengal through district-level projects",
+    phones:["14567"],
+    website:"https://www.helpageindia.org/",
+    src:"helpageindia.org",
+    note:"14567 is Elderline, their national toll-free helpline."
+  },
+  {
+    name:"Manovikas Kendra",
+    causes:["disability"],
+    about:"Inclusive education, therapy, vocational training and rehabilitation for children and young adults with disabilities.",
+    address:"482, Madudah, Plot 1-24, Sector J, EM Bypass, Kolkata 700107",
+    phones:["+913346031861","+917890013229"],
+    email:"director@manovikaskendra.org",
+    website:"https://manovikaskendra.org/",
+    src:"manovikaskendra.org"
+  },
+  {
+    name:"Indian Institute of Cerebral Palsy (IICP)",
+    causes:["disability"],
+    about:"Services for children and adults with cerebral palsy and other neuro-motor disabilities. Family services, schooling and vocational training.",
+    address:"P-35/1, Taratola Road, Kolkata 700088",
+    phones:["+919830045310","+913324012347"],
+    email:"mail@iicpindia.org",
+    website:"https://www.iicpindia.org/",
+    src:"iicpindia.org"
+  },
+  {
+    name:"Kripa Foundation — Kolkata Centre",
+    causes:["drugs"],
+    about:"De-addiction and rehabilitation for drug and alcohol dependence: counselling, detox support, family counselling and aftercare.",
+    address:"Kolkata, West Bengal",
+    phones:["+919831084794"],
+    email:"info@kripafoundation.org",
+    website:"https://kripafoundation.org/drug-rehabilitation-centre-in-kolkata/",
+    src:"kripafoundation.org",
+    note:"Call before visiting to confirm programme availability."
+  },
+  {
+    name:"Compassionate Crusaders Centre for Animal Welfare",
+    causes:["animals"],
+    about:"Animal welfare and rescue in south Kolkata — injured and abandoned dogs and cats.",
+    address:"Shyama Prasad Mukherjee Road, Dhakuria, Kolkata 700026",
+    phones:["+913324647030"],
+    src:"voicelessindia.org"
+  },
+  {
+    name:"Animal Hospital and Research Institute",
+    causes:["animals"],
+    about:"Animal hospital treating street animals; also a point of contact for injured strays.",
+    address:"Mukundapur, Nitai Nagar, Kolkata 700099",
+    phones:["+918335045433"],
+    src:"voicelessindia.org"
+  },
+  {
+    name:"Animal Rescue & Care (ARC) Kolkata",
+    causes:["animals"],
+    about:"Rescue, shelter and rehabilitation of sick, injured and abandoned animals.",
+    address:"11/4, Jyotirmony Nagar Road, Purbasan, Thakurpukur, Kolkata 700063",
+    website:"https://www.arckolkata.org/",
+    src:"arckolkata.org"
+  },
+  {
+    name:"Wild Animal Rescue & Transit Facility",
+    causes:["animals"],
+    about:"Government facility for injured or displaced wild animals, birds and reptiles. Run by the West Bengal Forest Department.",
+    address:"AE-389, Canal Side Road, AE Block, Sector 1, Bidhannagar, Kolkata 700064",
+    phones:["+913323340234"],
+    src:"voicelessindia.org"
+  },
+  {
+    name:"Love N Care For Animals",
+    causes:["animals"],
+    about:"Shelter and rescue for street dogs in the Sarsuna / Behala area.",
+    address:"Sarsuna, Kolkata 700141",
+    phones:["+919830037693"],
+    src:"voicelessindia.org"
+  },
+  {
+    name:"Animal Care Center",
+    causes:["animals"],
+    about:"Treatment and shelter for injured and abandoned animals.",
+    address:"B-30/274, Jagannathpur, Ashuti 2, Sarsuna, Kolkata 700141",
+    phones:["+913324805079"],
+    src:"voicelessindia.org"
+  },
+  {
+    name:"Pashupati Animal Welfare Society (PAWS)",
+    causes:["animals"],
+    about:"Volunteer-run animal welfare society in the Dum Dum area.",
+    address:"Eden Park, Manikpur, Dum Dum, Kolkata 700080",
+    src:"voicelessindia.org",
+    note:"No published phone line — contact through local volunteers."
+  }
+];
+
+/* NGO categories shown as sections in the NGOs tab. */
+const NGO_GROUPS = [
+  { id:"children",   title:"Children",                 icon:"ico-child", accent:"linear-gradient(135deg,#22c55e,#84cc16)", desc:"Child protection, education, nutrition and rescue" },
+  { id:"girls",      title:"Girls & adolescents",      icon:"ico-safe",  accent:"linear-gradient(135deg,#ff5c9e,#8b5cf6)", desc:"Shelter, counselling and rehabilitation for girls and teenagers" },
+  { id:"women",      title:"Women",                    icon:"ico-safe",  accent:"linear-gradient(135deg,#ec4899,#f97316)", desc:"Shelters, legal help and rehabilitation for women" },
+  { id:"elderly",    title:"Elderly",                  icon:"ico-old",   accent:"linear-gradient(135deg,#8b5cf6,#6366f1)", desc:"Homes, day-care and support for older people" },
+  { id:"disability", title:"Specially-abled children", icon:"ico-ngo",   accent:"linear-gradient(135deg,#0ea5e9,#22d3ee)", desc:"Therapy, special education and vocational training" },
+  { id:"animals",    title:"Animals & stray dogs",     icon:"ico-pet",   accent:"linear-gradient(135deg,#14b8a6,#84cc16)", desc:"Rescue, treatment and shelter for animals" },
+  { id:"drugs",      title:"Drug use & addiction",     icon:"ico-ngo",   accent:"linear-gradient(135deg,#8b5cf6,#ec4899)", desc:"De-addiction, counselling and rehabilitation" }
+];
+
 const DEFAULT_MSG =
 "🚨 SOS — I need immediate help.\n\n" +
 "I am at this location: {location}\n\n" +
@@ -1193,6 +1423,7 @@ const DEFAULT_MSG =
 
 const POLICE_SVG = '<svg viewBox="0 0 24 24"><path d="M12 2 4 5.5v5.8c0 4.9 3.4 9.4 8 10.7 4.6-1.3 8-5.8 8-10.7V5.5L12 2Zm0 4.2 1.6 3.3 3.6.5-2.6 2.6.6 3.6-3.2-1.7-3.2 1.7.6-3.6L6.8 10l3.6-.5L12 6.2Z"/></svg>';
 const HOSP_SVG   = '<svg viewBox="0 0 24 24"><path d="M11 3h2v4h4v2h-4v4h-2V9H7V7h4V3ZM5 15h14v6H5v-6Z"/></svg>';
+const PET_SVG    = '<svg viewBox="0 0 24 24"><path d="M4.5 8.5a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm11 0a2 2 0 1 1 4 0 2 2 0 0 1-4 0ZM2.5 13a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm15 0a2 2 0 1 1 4 0 2 2 0 0 1-4 0ZM12 11c2.5 0 5 2.6 5 5.2 0 2-1.6 3.3-3.4 3.3-.8 0-1.1-.3-1.6-.3s-.8.3-1.6.3C8.6 19.5 7 18.2 7 16.2 7 13.6 9.5 11 12 11Z"/></svg>';
 const PIN_SVG    = '<svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>';
 const PHONE_SVG  = '<svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .6 3.6 1 1 0 0 1-.25 1l-2.25 2.2Z"/></svg>';
 const MAIL_SVG   = '<svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg>';
@@ -1338,6 +1569,7 @@ $("#themeBtn").addEventListener("click", () => {
 const state = {
   hospitals: [],
   police: [],
+  petcare: [],
   meta: null,
   loaded: false,
   q: "",
@@ -1345,7 +1577,7 @@ const state = {
   phoneOnly: false,
   userLoc: null,
   activeCat: "helplines",
-  shown: { hospitals: 24, police: 24 }
+  shown: { hospitals: 24, police: 24, petcare: 24 }
 };
 const PAGE_SIZE = 24;
 
@@ -1375,32 +1607,86 @@ function renderStrip(){
 }
 
 function helplineCardHTML(h, accent, idx){
-  const tel = telHref(h.num);
-  const mob = mobileNumber(h.num);
+  const isPortal = !!h.portal;
+  const tel = isPortal ? "" : telHref(h.num);
+  const mob = isPortal ? null : mobileNumber(h.num);
+  /* Pre-written alert, with the live Maps link substituted when we have one. */
   const rawMsg = (h.msg || "").replace(/\{location\}/g,
     state.userLoc ? mapsLink(state.userLoc.lat, state.userLoc.lng) : "my current location (see my next message)");
 
-  const actions = [
-    `<a class="btn btn-call" href="tel:${esc(tel)}">${PHONE_SVG}Call ${esc(prettyNum(h.num))}</a>`
-  ];
+  const actions = [];
+  if (isPortal){
+    actions.push(`<a class="btn btn-map" style="flex:1 1 auto;background:linear-gradient(135deg,#2563eb,#22d3ee);color:#fff;border-color:transparent" href="${esc(h.href)}" target="_blank" rel="noopener noreferrer">${PIN_SVG}Open portal</a>`);
+  } else {
+    actions.push(`<a class="btn btn-call" href="tel:${esc(tel)}">${PHONE_SVG}Call ${esc(prettyNum(h.num))}</a>`);
+  }
   if (mob)
-    actions.push(`<a class="btn btn-wa" href="https://wa.me/${mob}?text=${encodeURIComponent(rawMsg || h.label)}" target="_blank" rel="noopener noreferrer">${WA_SVG}WhatsApp</a>`);
+    actions.push(`<a class="btn btn-wa" href="https://wa.me/${mob}?text=${encodeURIComponent(rawMsg || h.label)}" target="_blank" rel="noopener noreferrer" title="This is an official helpline — WhatsApp may not be monitored. Calling is more reliable.">${WA_SVG}WhatsApp</a>`);
   if (h.msg)
     actions.push(`<button class="btn btn-soft btn-sm" type="button" data-copy="${esc(rawMsg)}">${COPY_SVG}Copy alert</button>`);
 
+  const avatarText = isPortal ? "WEB" : prettyNum(h.num).slice(0, 3);
+
   return `<article class="ccard" style="--accent:${accent}">
     <div class="ccard-top">
-      <div class="avatar a${(idx % 8) + 1}" aria-hidden="true">${esc(prettyNum(h.num).slice(0, 3))}</div>
+      <div class="avatar a${(idx % 8) + 1}" aria-hidden="true">${esc(avatarText)}</div>
       <div style="min-width:0">
         <h4 class="card-name" style="font-size:.94rem">${esc(h.label || prettyNum(h.num))}</h4>
         <p class="card-sub">${esc(h.note || "")}</p>
       </div>
     </div>
     <div class="chips">
-      ${mob ? '<span class="chip ok">WhatsApp ready</span>' : '<span class="chip">Voice call</span>'}
+      ${isPortal ? '<span class="chip info">Official portal</span>'
+                 : (mob ? '<span class="chip info">Mobile line</span>' : '<span class="chip">Voice call</span>')}
       ${h.msg ? '<span class="chip hot">Alert ready</span>' : ""}
       ${h.src ? `<span class="chip info">${esc(h.src)}</span>` : ""}
     </div>
+    <div class="card-actions">${actions.join("")}</div>
+  </article>`;
+}
+
+/* ------------------------------------------------------------------
+   NGO CARDS
+   ------------------------------------------------------------------ */
+function ngoCardHTML(n, accent, idx){
+  const maps = n.address
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(n.address)}`
+    : null;
+
+  const meta = [];
+  if (n.address) meta.push(`<div class="mrow">${PIN_SVG}<span>${esc(n.address)}</span></div>`);
+  if (n.phones && n.phones.length)
+    meta.push(`<div class="mrow">${PHONE_SVG}<span>${n.phones.map(p => `<a href="tel:${esc(p)}">${esc(prettyE164(p))}</a>`).join(" · ")}</span></div>`);
+  if (n.email)
+    meta.push(`<div class="mrow">${MAIL_SVG}<span><a href="mailto:${esc(n.email)}">${esc(n.email)}</a></span></div>`);
+  if (n.website)
+    meta.push(`<div class="mrow">${PIN_SVG}<span><a href="${esc(n.website)}" target="_blank" rel="noopener noreferrer">${esc(n.website.replace(/^https?:\/\//,"").replace(/\/$/,"").slice(0,46))}</a></span></div>`);
+
+  const actions = [];
+  if (n.phones && n.phones.length)
+    actions.push(`<a class="btn btn-call" href="tel:${esc(n.phones[0])}">${PHONE_SVG}Call</a>`);
+  if (n.email)
+    actions.push(`<a class="btn btn-mail" href="mailto:${esc(n.email)}">${MAIL_SVG}Email</a>`);
+  if (maps)
+    actions.push(`<a class="btn btn-map" href="${maps}" target="_blank" rel="noopener noreferrer">${PIN_SVG}Map</a>`);
+  if (n.website)
+    actions.push(`<a class="btn btn-soft btn-sm" href="${esc(n.website)}" target="_blank" rel="noopener noreferrer">Website</a>`);
+
+  return `<article class="ccard" style="--accent:${accent}">
+    <div class="ccard-top">
+      <div class="avatar a${(idx % 8) + 1}" aria-hidden="true">${esc((n.name || "?").trim().charAt(0).toUpperCase())}</div>
+      <div style="min-width:0">
+        <h4 class="card-name" style="font-size:.94rem">${esc(n.name)}</h4>
+        <p class="card-sub">${esc(n.about || "")}</p>
+      </div>
+    </div>
+    <div class="chips">
+      ${(n.phones && n.phones.length) ? '<span class="chip ok">Callable</span>' : '<span class="chip">No phone listed</span>'}
+      ${n.email ? '<span class="chip info">Email listed</span>' : ""}
+      ${n.src ? `<span class="chip">${esc(n.src)}</span>` : ""}
+    </div>
+    ${meta.length ? `<div class="card-meta">${meta.join("")}</div>` : ""}
+    ${n.note ? `<p class="card-sub" style="margin:0">${esc(n.note)}</p>` : ""}
     <div class="card-actions">${actions.join("")}</div>
   </article>`;
 }
@@ -1415,7 +1701,13 @@ const GROUP_ICONS = {
   child:'<svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 12c-4 0-8 2-8 4.5V21h16v-2.5C20 16 16 14 12 14Z"/></svg>',
   elderly:'<svg viewBox="0 0 24 24"><path d="M12 4a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm-1 8h2l1 5h3l1.5 7h-2l-1-5H8.5l-1 5h-2L7 12h4Z"/></svg>',
   road:'<svg viewBox="0 0 24 24"><path d="M11 2h2v5h-2V2Zm0 7h2v6h-2V9Zm0 8h2v5h-2v-5ZM4 2h2v20H4V2Zm14 0h2v20h-2V2Z"/></svg>',
-  misc:'<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"/></svg>'
+  misc:'<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"/></svg>',
+  /* NGO section icons */
+  children:'<svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 12c-4 0-8 2-8 4.5V21h16v-2.5C20 16 16 14 12 14Z"/></svg>',
+  girls:'<svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 0-5 5c0 2.6 2 4.4 4 4.9V15H8v2h3v3h2v-3h3v-2h-3v-3.1c2-.5 4-2.3 4-4.9a5 5 0 0 0-5-5Zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6Z"/></svg>',
+  disability:'<svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm-1 6h2v4h3.5l2 6h-2.1l-1.4-4H11v5H9V9.5C9 8.7 9.7 8 10.5 8H11Z"/></svg>',
+  animals:'<svg viewBox="0 0 24 24"><path d="M4.5 8.5a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm11 0a2 2 0 1 1 4 0 2 2 0 0 1-4 0ZM2.5 13a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm15 0a2 2 0 1 1 4 0 2 2 0 0 1-4 0ZM12 11c2.5 0 5 2.6 5 5.2 0 2-1.6 3.3-3.4 3.3-.8 0-1.1-.3-1.6-.3s-.8.3-1.6.3C8.6 19.5 7 18.2 7 16.2 7 13.6 9.5 11 12 11Z"/></svg>',
+  drugs:'<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-1 5h2v4h4v2h-4v4h-2v-4H7v-2h4V7Z"/></svg>'
 };
 
 function renderHelplinePanel(){
@@ -1512,6 +1804,104 @@ function hospitalCardHTML(r){
   </article>`;
 }
 
+/* Pet care: contact buttons appear only when the record actually has a
+   phone number or email — otherwise the card gives location + address. */
+function petCardHTML(r){
+  const chips = [];
+  if (r.type) chips.push(`<span class="chip">${esc(r.type)}</span>`);
+  if (r.phones && r.phones.length) chips.push(`<span class="chip ok">Callable</span>`);
+  if (r.distance != null) chips.push(`<span class="chip info">${fmtDist(r.distance)} away</span>`);
+
+  const meta = [];
+  meta.push(`<div class="mrow">${PIN_SVG}<span>${esc(r.address || "Kolkata · " + r.lat.toFixed(4) + ", " + r.lon.toFixed(4))}</span></div>`);
+  if (r.phones && r.phones.length)
+    meta.push(`<div class="mrow">${PHONE_SVG}<span>${r.phones.map(p => `<a href="tel:${esc(p)}">${esc(prettyE164(p))}</a>`).join(" · ")}</span></div>`);
+  if (r.emails && r.emails.length)
+    meta.push(`<div class="mrow">${MAIL_SVG}<span>${r.emails.map(m => `<a href="mailto:${esc(m)}">${esc(m)}</a>`).join(" · ")}</span></div>`);
+  if (r.website)
+    meta.push(`<div class="mrow">${PIN_SVG}<span><a href="${esc(r.website)}" target="_blank" rel="noopener noreferrer">${esc(r.website.replace(/^https?:\/\//,"").replace(/\/$/,""))}</a></span></div>`);
+
+  const actions = [];
+  if (r.phones && r.phones.length)
+    actions.push(`<a class="btn btn-call" href="tel:${esc(r.phones[0])}">${PHONE_SVG}Call</a>`);
+  if (r.emails && r.emails.length)
+    actions.push(`<a class="btn btn-mail" href="mailto:${esc(r.emails[0])}">${MAIL_SVG}Email</a>`);
+  actions.push(`<a class="btn btn-map" href="${mapsQuery(r)}" target="_blank" rel="noopener noreferrer">${PIN_SVG}Map</a>`);
+
+  return `<article class="card" style="--accent:linear-gradient(135deg,#14b8a6,#84cc16)">
+    <div class="card-top">
+      <div class="card-ico" style="background:linear-gradient(135deg,#14b8a6,#84cc16)">${PET_SVG}</div>
+      <div style="min-width:0">
+        <h4 class="card-name">${esc(r.name)}</h4>
+        <p class="card-sub">${esc(r.address || "Kolkata")}</p>
+      </div>
+    </div>
+    ${chips.length ? `<div class="chips">${chips.join("")}</div>` : ""}
+    <div class="card-meta">${meta.join("")}</div>
+    <div class="card-actions">${actions.join("")}</div>
+  </article>`;
+}
+
+function renderPetPanel(){
+  const host = $("#body-petcare");
+  if (!host) return;
+  const animals = NGO_ORGS.filter(n => n.causes.indexOf("animals") !== -1);
+
+  const clinics = sectionHTML({
+    key:"petcare", icon:"ico-pet",
+    title:"Veterinary clinics & pet services",
+    desc:"Veterinary practices, animal shelters and pet services mapped in OpenStreetMap inside Kolkata",
+    svg:PET_SVG, card:petCardHTML,
+    emptyTitle:"Almost nothing mapped here yet",
+    emptyBody:"OpenStreetMap has very few veterinary practices mapped inside Kolkata, so this list is short. The animal welfare organisations below all have real contact numbers — use them for an injured or stray animal."
+  });
+
+  const orgs = `<div class="hgroup">
+    <div class="cat-head">
+      <div class="cat-ico ico-pet">${PET_SVG}</div>
+      <div>
+        <h3>Animal rescue &amp; welfare organisations</h3>
+        <p>Volunteer and NGO-run shelters that take in injured, abandoned and stray animals</p>
+      </div>
+      <span class="cat-count">${animals.length} organisations</span>
+    </div>
+    <div class="hgrid">${animals.map((n, i) => ngoCardHTML(n, "linear-gradient(135deg,#14b8a6,#84cc16)", i)).join("")}</div>
+  </div>`;
+
+  host.innerHTML = clinics + orgs;
+
+  const badge = $('.cnt[data-cnt="petcare"]');
+  if (badge) badge.textContent = (state.petcare || []).length + animals.length;
+}
+
+function renderNgoPanel(){
+  const host = $("#body-ngos");
+  if (!host) return;
+
+  const intro = `<div class="banner warn show" style="margin-bottom:22px">
+    <svg viewBox="0 0 24 24"><path d="M12 2 1 21h22L12 2Zm1 15h-2v-2h2v2Zm0-4h-2V9h2v4Z"/></svg>
+    <div>
+      <div class="bt">These are community organisations, not emergency services</div>
+      <div class="bd">Details are reproduced from each organisation's own website or public listing and may change — please confirm before travelling or donating. <b>In an emergency always dial 112.</b> Government helplines are in the Helplines tab.</div>
+    </div>
+  </div>`;
+
+  host.innerHTML = intro + NGO_GROUPS.map(g => {
+    const orgs = NGO_ORGS.filter(n => n.causes.indexOf(g.id) !== -1);
+    return `<div class="hgroup" id="ngo-${g.id}">
+      <div class="cat-head">
+        <div class="cat-ico ${g.icon}">${GROUP_ICONS[g.id] || GROUP_ICONS.misc}</div>
+        <div><h3>${esc(g.title)}</h3><p>${esc(g.desc)}</p></div>
+        <span class="cat-count">${orgs.length} ${orgs.length === 1 ? "organisation" : "organisations"}</span>
+      </div>
+      <div class="hgrid">${orgs.map((n, i) => ngoCardHTML(n, g.accent, i)).join("")}</div>
+    </div>`;
+  }).join("");
+
+  const badge = $('.cnt[data-cnt="ngos"]');
+  if (badge) badge.textContent = NGO_ORGS.length;
+}
+
 function policeCardHTML(r){
   const chips = [];
   if (r.type) chips.push(`<span class="chip">${esc(r.type)}</span>`);
@@ -1544,12 +1934,13 @@ function sectionHTML(cfg){
   if (!state.loaded){
     body = `<div class="${gridClass}">${'<div class="sk"></div>'.repeat(3)}</div>`;
   } else if (!visible.length){
+    const noMatch = filtered.length === 0 && all.length > 0;
     body = `<div class="empty">
       <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"/></svg>
-      <h4>${filtered.length === 0 && all.length > 0 ? "Nothing matches that search" : "No records loaded"}</h4>
-      <p>${filtered.length === 0 && all.length > 0
+      <h4>${noMatch ? "Nothing matches that search" : esc(cfg.emptyTitle || "No records loaded")}</h4>
+      <p>${noMatch
         ? "Try a different spelling, or clear the search box."
-        : "The bundled dataset could not be read. Use “Reload data”, and if it still fails check your internet connection."}</p>
+        : esc(cfg.emptyBody || "The bundled dataset could not be read. Use “Reload data”, and if it still fails check your internet connection.")}</p>
     </div>`;
   } else {
     body = `<div class="${gridClass}">${visible.map(cfg.card).join("")}</div>` +
@@ -1603,15 +1994,19 @@ function updateCounters(){
   if (badgeH) badgeH.textContent = state.loaded ? state.hospitals.length : "…";
   const badgeP = $('.cnt[data-cnt="police"]');
   if (badgeP) badgeP.textContent = state.loaded ? state.police.length : "…";
+  const badgeV = $('.cnt[data-cnt="petcare"]');
+  if (badgeV) badgeV.textContent = state.loaded ? state.petcare.length : "…";
   const fp = $("#factPlaces");
   if (fp) fp.textContent = state.loaded
-    ? (state.hospitals.length + state.police.length).toLocaleString("en-IN") : "—";
+    ? (state.hospitals.length + state.police.length + state.petcare.length).toLocaleString("en-IN") : "—";
 }
 
 function render(){
   updateCounters();
   if (state.activeCat === "helplines") renderHelplinePanel();
   else if (state.activeCat === "safety") renderSafetyHelplines();
+  else if (state.activeCat === "ngos") renderNgoPanel();
+  else if (state.activeCat === "petcare") renderPetPanel();
   else renderDirectory();
 }
 
@@ -1635,16 +2030,17 @@ function stampTime(ts){
 }
 
 function applyData(json){
-  state.hospitals = (Array.isArray(json.hospitals) ? json.hospitals : [])
+  const clean = (arr) => (Array.isArray(arr) ? arr : [])
     .map(r => { r.name = tidyName(r.name); return r; })
     .filter(r => r.name);
-  state.police = (Array.isArray(json.police) ? json.police : [])
-    .map(r => { r.name = tidyName(r.name); return r; })
-    .filter(r => r.name);
+  state.hospitals = clean(json.hospitals);
+  state.police    = clean(json.police);
+  state.petcare   = clean(json.petcare);
   state.meta      = json.meta || null;
   state.loaded    = true;
   state.shown.hospitals = PAGE_SIZE;
   state.shown.police = PAGE_SIZE;
+  state.shown.petcare = PAGE_SIZE;
 }
 
 async function loadData(force){
@@ -1702,6 +2098,7 @@ $("#search").addEventListener("input", debounce(function(){
   $("#searchWrap").classList.toggle("has-val", !!this.value);
   state.shown.hospitals = PAGE_SIZE;
   state.shown.police = PAGE_SIZE;
+  state.shown.petcare = PAGE_SIZE;
   render();
 }, 180));
 $("#searchClr").addEventListener("click", () => {
@@ -1720,6 +2117,7 @@ $("#filterPhone").addEventListener("click", function(){
   this.setAttribute("aria-pressed", String(state.phoneOnly));
   state.shown.hospitals = PAGE_SIZE;
   state.shown.police = PAGE_SIZE;
+  state.shown.petcare = PAGE_SIZE;
   render();
 });
 $("#reloadBtn").addEventListener("click", () => {
@@ -1731,7 +2129,8 @@ function activateTab(catId){
   $$(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.cat === catId)));
   $$(".panel").forEach(p => p.classList.toggle("active", p.id === "panel-" + catId));
   const toolbar = $("#toolbar");
-  if (toolbar) toolbar.style.display = (catId === "hospitals" || catId === "police") ? "" : "none";
+  if (toolbar) toolbar.style.display =
+    (catId === "hospitals" || catId === "police" || catId === "petcare") ? "" : "none";
   render();
   const bar = $(".tabbar-outer");
   if (bar) window.scrollTo({ top: Math.max(0, bar.offsetTop - 8), behavior: "smooth" });
@@ -1975,15 +2374,41 @@ function ctx(){
 }
 function startSiren(){
   const ac = ctx();
-  const osc = ac.createOscillator(), gain = ac.createGain(), lfo = ac.createOscillator(), lfoGain = ac.createGain();
-  osc.type = "sawtooth"; osc.frequency.value = 700;
-  lfo.type = "sine"; lfo.frequency.value = 0.7; lfoGain.gain.value = 420;
-  lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
-  gain.gain.value = 0.0001;
-  osc.connect(gain); gain.connect(ac.destination);
-  osc.start(); lfo.start();
-  gain.gain.exponentialRampToValueAtTime(0.22, ac.currentTime + 0.35);
-  sirenNodes = { osc, lfo, gain };
+
+  /* A limiter keeps the signal loud without turning into digital clipping. */
+  const comp = ac.createDynamicsCompressor();
+  comp.threshold.value = -8;
+  comp.knee.value = 6;
+  comp.ratio.value = 12;
+  comp.attack.value = 0.003;
+  comp.release.value = 0.25;
+
+  const master = ac.createGain();
+  master.gain.value = 0.0001;
+  master.connect(comp);
+  comp.connect(ac.destination);
+
+  /* Two detuned layers make the siren carry much further than one tone. */
+  const oscs = [];
+  [0, 6].forEach((offset, i) => {
+    const osc = ac.createOscillator();
+    osc.type = i === 0 ? "sawtooth" : "square";
+    osc.frequency.value = 720 + offset;
+    osc.connect(master);
+    osc.start();
+    oscs.push(osc);
+  });
+
+  const lfo = ac.createOscillator(), lfoGain = ac.createGain();
+  lfo.type = "sine";
+  lfo.frequency.value = 0.9;
+  lfoGain.gain.value = 440;
+  lfo.connect(lfoGain);
+  oscs.forEach(o => lfoGain.connect(o.frequency));
+  lfo.start();
+
+  master.gain.exponentialRampToValueAtTime(1, ac.currentTime + 0.3);
+  sirenNodes = { oscs, lfo, gain: master };
 }
 function stopSiren(){
   const t = $("#sirenTool");
@@ -1996,7 +2421,9 @@ function stopSiren(){
     nodes.gain.gain.cancelScheduledValues(ac.currentTime);
     nodes.gain.gain.setValueAtTime(nodes.gain.gain.value, ac.currentTime);
     nodes.gain.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + 0.25);
-    setTimeout(() => { try { nodes.osc.stop(); nodes.lfo.stop(); } catch(_){} }, 320);
+    setTimeout(() => {
+      try { nodes.oscs.forEach(o => o.stop()); nodes.lfo.stop(); } catch(_){}
+    }, 320);
   } catch(_){}
 }
 $("#sirenTool").addEventListener("click", function(){
@@ -2093,6 +2520,7 @@ window.addEventListener("online", () => {
   renderStrip();
   renderHelplinePanel();
   renderSafetyHelplines();
+  renderNgoPanel();
   renderDirectory();
   const toolbar = $("#toolbar");
   if (toolbar) toolbar.style.display = "none";

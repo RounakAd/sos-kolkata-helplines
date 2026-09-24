@@ -60,17 +60,49 @@ run it again.
 
 ## What is and isn't in the data file
 
-**In it** — hospitals and police stations inside the Kolkata bounding box
-(22.42°–22.70° N, 88.20°–88.50° E), with coordinates, addresses, phone numbers,
-emails and websites where OpenStreetMap has them.
+**In it** — hospitals, police stations and pet care (veterinary clinics, animal
+shelters, pet services) inside the Kolkata bounding box (22.42°–22.70° N,
+88.20°–88.50° E), with coordinates, addresses, phone numbers, emails and websites
+where OpenStreetMap has them.
 
-**Not in it** — fire stations, ambulance stations, towing and cyber cells. OpenStreetMap
-has almost no coverage of those in Kolkata, so instead of showing empty categories the
-site lists the **official government helplines** for each of them: 101 (fire),
-102 (ambulance), 1930 (cyber crime) and 1033 / 1073 (breakdown and road accidents).
+**Not in it** — fire stations, ambulance stations, towing and cyber cells.
+OpenStreetMap has almost no coverage of those in Kolkata, so instead of showing
+empty categories the site lists the **official government helplines** for each of
+them: 101 (fire), 102 (ambulance), 1930 (cyber crime) and 1033 / 1073 (breakdown
+and road accidents).
 
-Every helpline number in the site is published by the Government of India or the
-Government of West Bengal, and each card names its source.
+Pet care is thin for the same reason — OpenStreetMap only has a handful of
+veterinary practices mapped in Kolkata, and none with a phone number. Those cards
+therefore show **location and address only**. The animal welfare organisations in
+the Pet Care tab carry the real contact numbers.
+
+---
+
+## The tabs
+
+| Tab | Contents |
+|---|---|
+| **Helplines** | 45 government-verified numbers in 13 groups: emergency, women, cyber, missing persons, Kolkata Metro, railways, disaster, children, elderly, mental health & de-addiction, support & inclusion, road, and utilities. |
+| **Hospitals** | Every hospital and nursing home in Kolkata, with phone, email and map. |
+| **Police Stations** | Every police station, with a Google Maps link. No phone numbers — OpenStreetMap doesn't have them, and inventing them would be worse than omitting them. |
+| **Pet Care** | Mapped veterinary clinics and pet services, plus animal rescue organisations with real phone numbers. |
+| **NGOs** | Kolkata non-profits for children, girls, women, the elderly, specially-abled children, animals and drug addiction. |
+| **Women's Safety** | One-tap SOS with live GPS, a pre-written alert, WhatsApp / SMS / email sending, a siren and a fake-call escape tool. |
+
+---
+
+## Where the NGO details come from
+
+Every organisation in the NGOs tab is a real, named Kolkata non-profit. Addresses,
+phone numbers and emails were taken from the organisation's **own website** where
+one exists — CINI, Sanlaap, Manovikas Kendra, IICP, Kripa Foundation, All Bengal
+Women's Union, Little Sisters of the Poor — and otherwise from a public animal
+welfare directory. Each card shows its source.
+
+These are community organisations, **not emergency services**. Details can go
+stale: the site says so prominently, and the section tells users to confirm before
+travelling or donating. If you spot something out of date, edit the `NGO_ORGS`
+array in `index.html` — it's a plain list of objects.
 
 ---
 
