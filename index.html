@@ -1845,7 +1845,7 @@ function petCardHTML(r){
 function renderPetPanel(){
   const host = $("#body-petcare");
   if (!host) return;
-  const animals = NGO_ORGS.filter(n => n.causes.indexOf("animals") !== -1);
+  const animals = animalOrgs();
 
   const clinics = sectionHTML({
     key:"petcare", icon:"ico-pet",
@@ -1871,7 +1871,7 @@ function renderPetPanel(){
   host.innerHTML = clinics + orgs;
 
   const badge = $('.cnt[data-cnt="petcare"]');
-  if (badge) badge.textContent = (state.petcare || []).length + animals.length;
+  if (badge) badge.textContent = state.loaded ? petcareTotal() : "…";
 }
 
 function renderNgoPanel(){
@@ -1989,13 +1989,19 @@ function tidyName(n){
   return s;
 }
 
+/** Animal welfare organisations — shown in both the Pet Care tab and the NGO list. */
+function animalOrgs(){ return NGO_ORGS.filter(n => n.causes.indexOf("animals") !== -1); }
+
+/** Total cards in the Pet Care tab: mapped clinics + animal welfare organisations. */
+function petcareTotal(){ return (state.petcare || []).length + animalOrgs().length; }
+
 function updateCounters(){
   const badgeH = $('.cnt[data-cnt="hospitals"]');
   if (badgeH) badgeH.textContent = state.loaded ? state.hospitals.length : "…";
   const badgeP = $('.cnt[data-cnt="police"]');
   if (badgeP) badgeP.textContent = state.loaded ? state.police.length : "…";
   const badgeV = $('.cnt[data-cnt="petcare"]');
-  if (badgeV) badgeV.textContent = state.loaded ? state.petcare.length : "…";
+  if (badgeV) badgeV.textContent = state.loaded ? petcareTotal() : "…";
   const fp = $("#factPlaces");
   if (fp) fp.textContent = state.loaded
     ? (state.hospitals.length + state.police.length + state.petcare.length).toLocaleString("en-IN") : "—";
@@ -2456,22 +2462,75 @@ $("#fakeCallTool").addEventListener("click", () => {
   document.body.appendChild(overlay);
   document.body.style.overflow = "hidden";
 
-  let ring = null;
+  /* A real telephone ring: 440 Hz + 480 Hz sounded together and amplitude-
+     modulated at 20 Hz for the bell-like trill, in a 2 s on / 2 s off
+     cadence, run through a limiter so it is loud without clipping. */
+  let ringTimer = null, ringNodes = null;
   try {
     const ac = ctx();
-    const g = ac.createGain(); g.gain.value = 0.0001; g.connect(ac.destination);
-    const o = ac.createOscillator(); o.type = "sine"; o.frequency.value = 480; o.connect(g); o.start();
-    const beep = () => {
+
+    const comp = ac.createDynamicsCompressor();
+    comp.threshold.value = -8;
+    comp.knee.value = 6;
+    comp.ratio.value = 12;
+    comp.attack.value = 0.003;
+    comp.release.value = 0.25;
+    comp.connect(ac.destination);
+
+    const master = ac.createGain();      // carries the on/off cadence
+    master.gain.value = 0.0001;
+    master.connect(comp);
+
+    const trill = ac.createGain();       // 20 Hz tremolo, the "brrring"
+    trill.gain.value = 0.6;
+    trill.connect(master);
+
+    const oscs = [];
+    [440, 480].forEach(f => {
+      const o = ac.createOscillator();
+      o.type = "sine";
+      o.frequency.value = f;
+      o.connect(trill);
+      o.start();
+      oscs.push(o);
+    });
+
+    const am = ac.createOscillator(), amDepth = ac.createGain();
+    am.type = "sine";
+    am.frequency.value = 20;
+    amDepth.gain.value = 0.4;
+    am.connect(amDepth);
+    amDepth.connect(trill.gain);
+    am.start();
+
+    const ringOnce = () => {
       const t = ac.currentTime;
-      g.gain.cancelScheduledValues(t);
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(0.16, t + 0.05);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
+      master.gain.cancelScheduledValues(t);
+      master.gain.setValueAtTime(0.0001, t);
+      master.gain.exponentialRampToValueAtTime(0.95, t + 0.03);
+      master.gain.setValueAtTime(0.95, t + 1.85);
+      master.gain.exponentialRampToValueAtTime(0.0001, t + 2);
     };
-    beep();
-    ring = setInterval(beep, 1800);
-    overlay._osc = o; overlay._gain = g;
+    ringOnce();
+    ringTimer = setInterval(ringOnce, 4000);   // 2 s ringing, 2 s quiet
+    ringNodes = { oscs, am, master };
   } catch(_){}
+
+  const stopRing = () => {
+    clearInterval(ringTimer); ringTimer = null;
+    if (!ringNodes) return;
+    const n = ringNodes; ringNodes = null;
+    try {
+      const ac = ctx();
+      const now = ac.currentTime;
+      n.master.gain.cancelScheduledValues(now);
+      n.master.gain.setValueAtTime(Math.max(0.0001, n.master.gain.value), now);
+      n.master.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
+      setTimeout(() => {
+        try { n.oscs.forEach(o => o.stop()); n.am.stop(); } catch(_){}
+      }, 220);
+    } catch(_){}
+  };
 
   let secs = 0;
   const timer = setInterval(() => {
@@ -2481,14 +2540,14 @@ $("#fakeCallTool").addEventListener("click", () => {
   }, 1000);
 
   const kill = () => {
-    clearInterval(ring); clearInterval(timer);
-    try { if (overlay._gain) overlay._gain.disconnect(); if (overlay._osc) overlay._osc.stop(); } catch(_){}
+    stopRing();
+    clearInterval(timer);
     overlay.remove();
     document.body.style.overflow = "";
   };
   $("#fcEnd").addEventListener("click", kill);
   $("#fcAns").addEventListener("click", () => {
-    clearInterval(ring);
+    stopRing();
     const n = $("#fcName"); if (n) n.textContent = "Amit · connected";
     toast("You're “on a call” — keep the phone to your ear.", "info");
   });
